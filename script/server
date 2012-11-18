@@ -1,0 +1,14 @@
+#!/bin/sh
+if [ -z $RACK_ENV ]; then
+  RACK_ENV="development"
+fi
+
+script/bootstrap
+
+DEV_ENV=`expr $RACK_ENV = "development"`
+
+if [ $DEV_ENV -eq 1 ]; then
+  bin/shotgun
+else
+  bin/rackup
+fi

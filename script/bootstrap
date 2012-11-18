@@ -1,0 +1,4 @@
+#!/bin/sh
+make init
+echo "==> Bundle Installing"
+bundle install --binstubs
