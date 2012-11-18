@@ -1,6 +1,5 @@
 ## A pipeline for getting things 3D printed.
 
-
 ## Setup
 
 Clone this repo
@@ -17,3 +16,15 @@ including `data` but without the extension.
     $ make data/Mr_Jaws
 
 If something breaks, panic, and remember this isn't even Alpha.
+
+## API
+
+You can launch the web app by simply running
+
+    script/server
+
+Then you can POST a URL to the server and it'll start printing.
+
+    curl -v -d "url=http://f.cl.ly/items/111z2j09430c2v3Q2X1z/CuteOcto.stl" \
+      localhost:9393/print
+
