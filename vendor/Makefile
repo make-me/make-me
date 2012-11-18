@@ -11,9 +11,11 @@ s3g:
 ## Grue build
 grue: Miracle-Grue/bin/miracle_grue
 Miracle-Grue/bin/miracle_grue:
-	cd Miracle-Grue
-	scons
+	cd Miracle-Grue && scons
 
+s3g: s3g/virtualenv/bin/activate
+s3g/virtualenv/bin/activate:
+	cd s3g && ./setup.sh
 
 ## System
 brews:
