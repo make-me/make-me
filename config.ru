@@ -1,2 +1,2 @@
-require 'server/app'
+require './server/app'
 run PrintMe::App
