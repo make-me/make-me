@@ -1,0 +1,3 @@
+#!/bin/sh
+echo "==> Bundle Installing"
+bundle install --binstubs
