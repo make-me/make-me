@@ -26,7 +26,7 @@ module PrintMe
       ensure
         status 500
         lock_file.flock File::LOCK_UN
-        `rm data/print.stl`
+        File.delete('data/print.stl')
         "Broke during download & print"
       end
     end
