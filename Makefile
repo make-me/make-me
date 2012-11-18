@@ -7,10 +7,10 @@ THING_GCODE = $(patsubst %.stl,%.gcode,$(THING))
 
 ## Apps
 GRUE ?= echo bin/miracle_grue
-PRINT ?= echo python print_gcode_file -m "The Replicator 2" -p $(USB) -f
+PRINT ?= echo python print_gcode_file -m "The Replicator 2" -p /dev/$(USB) -f
 
-%: %.gcode
-	file $(USB) || { echo "No USB device found"; exit 1; }
+%: %.gcode | init
+	@[[ -f /dev/$(USB) ]] || { echo "No USB device found"; exit 1; }
 	@echo "Printing"
 	$(PRINT) $^
 
@@ -19,10 +19,17 @@ PRINT ?= echo python print_gcode_file -m "The Replicator 2" -p $(USB) -f
 	@echo "Building gcode"
 	$(GRUE) -s /dev/null -e /dev/null -o $@ $^
 
+## Plumbing
+init:
+	@echo "=> Loading submodules"
+	git submodule update --init --recursive
+	@echo "=> Building deps"
+	$(MAKE) -C vendor
+
 
 ## Main
 .DEFAULT_GOAL = help
-.PHONY: help
+.PHONY: help init
 
 help:
 	@echo "Usage:               "
