@@ -1,10 +1,6 @@
 #-*- mode:makefile-gmake; -*-
 ROOT = $(shell pwd)
-THING ?= data/Mr_Jaws.stl
 USB ?= $(shell ls /dev/ | grep tty.usbmodem | head -1)
-
-##
-THING_GCODE = $(patsubst %.stl,%.gcode,$(THING))
 
 ## Apps
 GRUE ?= bin/miracle_grue
