@@ -10,7 +10,7 @@ GRUE ?= echo bin/miracle_grue
 PRINT ?= echo python print_gcode_file -m "The Replicator 2" -p /dev/$(USB) -f
 
 %: %.gcode | init
-	@[[ -f /dev/$(USB) ]] || { echo "No USB device found"; exit 1; }
+	@[[ -c /dev/$(USB) ]] || { echo "No USB device found"; exit 1; }
 	@echo "Printing"
 	$(PRINT) $^
 
