@@ -6,13 +6,13 @@ USB ?= $(shell ls /dev/ | grep tty.usbmodem | head -1)
 THING_GCODE = $(patsubst %.stl,%.gcode,$(THING))
 
 ## Apps
-GRUE ?= echo bin/miracle_grue
-PRINT ?= echo python print_gcode_file -m "The Replicator 2" -p /dev/$(USB) -f
+GRUE ?= vendor/Miracle-Grue/bin/miracle_grue
+PRINT ?= python print_gcode_file.py -m "The Replicator 2" -p /dev/$(USB) -f
 
 %: %.gcode | init
 	@[[ -c /dev/$(USB) ]] || { echo "No USB device found"; exit 1; }
 	@echo "Printing"
-	$(PRINT) $^
+	(cd vendor/s3g; . virtualenv/bin/activate; cd examples; $(PRINT) $^)
 
 
 %.gcode: %.stl
