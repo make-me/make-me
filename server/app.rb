@@ -2,6 +2,7 @@
 
 require 'bundler'
 require 'sinatra/base'
+require './server/lib/download'
 
 module PrintMe
   class App < Sinatra::Base
@@ -14,7 +15,7 @@ module PrintMe
 
       stl_url = params[:url]
       begin
-        `curl -o "data/print.stl" #{stl_url}`
+        PrintMe::Download.new(stl_url, 'data/print.stl').fetch
         if system('make data/print')
           status 201
           "Thing printed! Go pick it up"
