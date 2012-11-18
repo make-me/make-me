@@ -1,6 +1,6 @@
 #!/bin/sh
 if [ -z $RACK_ENV ]; then
-  $RACK_ENV = "development"
+  RACK_ENV="development"
 fi
 
 script/bootstrap
