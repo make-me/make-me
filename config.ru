@@ -1,2 +1,2 @@
-require './server'
-run Sinatra::Application
+require 'server/app'
+run PrintMe::App
