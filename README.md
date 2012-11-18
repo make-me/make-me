@@ -4,7 +4,7 @@
 
 Clone this repo
 
-    git@github.com:github/print_me.git
+    https://github.com/github/make_me.git
 
 Download a `*.stl` file and place it in `data` directory.
 
