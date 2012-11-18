@@ -1,0 +1,3 @@
+[submodule "vendor/s3g"]
+	path = vendor/s3g
+	url = https://github.com/makerbot/s3g.git
