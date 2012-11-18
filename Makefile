@@ -16,9 +16,10 @@ PRINT ?= python print_gcode_file.py -m "The Replicator 2" -p /dev/$(USB) -f
 	(cd vendor/s3g; . virtualenv/bin/activate; cd examples; $(PRINT) $(ROOT)/$^)
 
 
+
 %.gcode: %.stl
 	@echo "Building gcode"
-	(cd vendor/Miracle-Grue/; $(GRUE) -s /dev/null -e /dev/null $(ROOT)/$^)
+	(cd vendor/Miracle-Grue/; $(GRUE) -s /dev/null -e /dev/null -o $(ROOT)/$@ $(ROOT)/$^)
 
 ## Plumbing
 init:
