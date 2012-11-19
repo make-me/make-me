@@ -8,6 +8,15 @@ module PrintMe
   class App < Sinatra::Base
     LOCK_FILE = 'printing.lock'
 
+    use Rack::Auth::Basic, "Restricted Area" do |username, password|
+      [username, password] == ['hubot', 'isalive']
+    end
+
+    get '/' do
+      status 200
+      "make_me version F.U-bro"
+    end
+
     post '/print' do
       if File.exist?(LOCK_FILE)
         reason = File.open(LOCK_FILE, 'r') { |f| f.read }
