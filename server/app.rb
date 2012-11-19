@@ -51,7 +51,7 @@ module PrintMe
     end
 
     post '/unlock' do
-      File.delete(LOCK_FILE)
+      File.delete(LOCK_FILE) if File.exist?(LOCK_FILE)
       status 200
       "Lock cleared!"
     end
