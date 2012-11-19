@@ -26,14 +26,13 @@ module PrintMe
 
     get '/photo' do
       imagesnap = File.join(File.dirname(__FILE__), '..', 'vendor', 'imagesnap', 'imagesnap')
-      rd, wr = IO.pipe
-      pid = Process.spawn(imagesnap, '-', :out  => wr)
-      wr.close
 
-      image = rd.read
-      Process.wait(pid)
-      content_type 'image/jpeg'
-      image
+      out_name = 'snap_' + Time.now.to_i.to_s + ".jpg"
+      out_dir = File.join(File.dirname(__FILE__), "public")
+
+      Process.wait Process.spawn(imagesnap, File.join(out_dir, out_name))
+
+      redirect out_name
     end
 
     ## Routes/Authed
