@@ -55,5 +55,17 @@ module PrintMe
       status 200
       "Lock cleared!"
     end
+
+    get '/photo' do
+      imagesnap = File.join(File.dirname(__FILE__), '..', 'vendor', 'imagesnap', 'imagesnap')
+      rd, wr = IO.pipe
+      pid = Process.spawn(imagesnap, '-', :out  => wr)
+      wr.close
+
+      image = rd.read
+      Process.wait(pid)
+      content_type 'image/jpeg'
+      image
+    end
   end
 end
