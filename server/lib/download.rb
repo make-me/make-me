@@ -1,4 +1,4 @@
-require 'open-uri'
+require_relative 'open-uri'
 
 module PrintMe
   class Download
@@ -10,7 +10,7 @@ module PrintMe
 
     def fetch
       open(output_file, 'wb') do |file|
-        file.print open(@url).read
+        file.print open(@url, :allow_unsafe_redirects => true).read
       end
     end
   end
