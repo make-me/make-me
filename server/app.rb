@@ -41,7 +41,7 @@ module PrintMe
     end
 
     get '/lock' do
-      if File.exist(LOCK_FILE)
+      if File.exist?(LOCK_FILE)
         status 423
         File.open(LOCK_FILE, 'r') { |f| f.read }
       else
