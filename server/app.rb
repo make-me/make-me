@@ -33,8 +33,8 @@ module PrintMe
 
     get '/locked' do
       if File.exist(LOCK_FILE)
-        reason = File.open(LOCK_FILE, 'r') { |f| f.read }
-        halt 423, reason
+        status 423
+        File.open(LOCK_FILE, 'r') { |f| f.read }
       else
         status 200
         "Unlocked"
