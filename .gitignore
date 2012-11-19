@@ -1,3 +1,4 @@
 bin/
 .bundle/
 data/
+printing.lock

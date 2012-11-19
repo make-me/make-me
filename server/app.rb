@@ -6,11 +6,14 @@ require './server/lib/download'
 
 module PrintMe
   class App < Sinatra::Base
-    post '/print' do
-      lock_file = File.new __FILE__
+    LOCK_FILE = 'printing.lock'
 
-      unless lock_file.flock File::LOCK_EX | File::LOCK_NB
-        halt 423, "Currently printing!"
+    post '/print' do
+      if File.exist?(LOCK_FILE)
+        reason = File.open(LOCK_FILE, 'r') { |f| f.read }
+        halt 423, reason
+      else
+        File.open(LOCK_FILE, 'w+') { |f| f.write "Currently printing" }
       end
 
       stl_url = params[:url]
@@ -24,9 +27,14 @@ module PrintMe
           "Failed to print"
         end
       ensure
-        lock_file.flock File::LOCK_UN
         File.delete('data/print.stl')
       end
+    end
+
+    post '/unlock' do
+      File.delete(LOCK_FILE)
+      status 200
+      "Lock cleared!"
     end
   end
 end
