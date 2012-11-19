@@ -1,23 +1,43 @@
 #!/usr/bin/env ruby
 
 require 'bundler'
-require 'sinatra/base'
+require 'sinatra'
+require 'sinatra-basicauth'
 require './server/lib/download'
 
 module PrintMe
   class App < Sinatra::Base
     LOCK_FILE = 'printing.lock'
 
-    use Rack::Auth::Basic, "Restricted Area" do |username, password|
-      [username, password] == ['hubot', 'isalive']
+    ## Config
+    set :static, true
+
+    basic_auth do
+      realm "The 3rd Dimension"
+      username 'hubot'
+      password 'isalive'
     end
 
+    ## Routes/Public
     get '/' do
       status 200
       "make_me version F.U-bro"
     end
 
+    get '/photo' do
+      imagesnap = File.join(File.dirname(__FILE__), '..', 'vendor', 'imagesnap', 'imagesnap')
+
+      out_name = 'snap_' + Time.now.to_i.to_s + ".jpg"
+      out_dir = File.join(File.dirname(__FILE__), "public")
+
+      Process.wait Process.spawn(imagesnap, File.join(out_dir, out_name))
+
+      redirect out_name
+    end
+
+    ## Routes/Authed
     post '/print' do
+      require_basic_auth
       if File.exist?(LOCK_FILE)
         reason = File.open(LOCK_FILE, 'r') { |f| f.read }
         halt 423, reason
@@ -41,6 +61,7 @@ module PrintMe
     end
 
     get '/lock' do
+      require_basic_auth
       if File.exist?(LOCK_FILE)
         status 423
         File.open(LOCK_FILE, 'r') { |f| f.read }
@@ -51,21 +72,10 @@ module PrintMe
     end
 
     post '/unlock' do
+      require_basic_auth
       File.delete(LOCK_FILE) if File.exist?(LOCK_FILE)
       status 200
       "Lock cleared!"
-    end
-
-    get '/photo' do
-      imagesnap = File.join(File.dirname(__FILE__), '..', 'vendor', 'imagesnap', 'imagesnap')
-      rd, wr = IO.pipe
-      pid = Process.spawn(imagesnap, '-', :out  => wr)
-      wr.close
-
-      image = rd.read
-      Process.wait(pid)
-      content_type 'image/jpeg'
-      image
     end
   end
 end
