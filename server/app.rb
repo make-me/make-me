@@ -50,7 +50,7 @@ module PrintMe
       end
     end
 
-    delete '/lock' do
+    post '/unlock' do
       File.delete(LOCK_FILE)
       status 200
       "Lock cleared!"
