@@ -31,7 +31,7 @@ module PrintMe
       end
     end
 
-    get '/locked' do
+    get '/lock' do
       if File.exist(LOCK_FILE)
         status 423
         File.open(LOCK_FILE, 'r') { |f| f.read }
@@ -41,7 +41,7 @@ module PrintMe
       end
     end
 
-    post '/unlock' do
+    delete '/lock' do
       File.delete(LOCK_FILE)
       status 200
       "Lock cleared!"
