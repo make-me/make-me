@@ -43,7 +43,7 @@ module PrintMe
         reason = File.open(LOCK_FILE, 'r') { |f| f.read }
         halt 423, reason
       else
-        File.open(LOCK_FILE, 'w+') { |f| f.write "Currently printing" }
+        File.open(LOCK_FILE, 'w') { |f| f.write "Currently printing" }
       end
 
       stl_url  = params[:url]
