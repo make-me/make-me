@@ -69,6 +69,10 @@ module PrintMe
       end
     end
 
+    get '/log' do
+      File.read(LOG_FILE)
+    end
+
     get '/lock' do
       require_basic_auth
       if File.exist?(LOCK_FILE)
