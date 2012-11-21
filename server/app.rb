@@ -8,8 +8,8 @@ require_relative 'lib/download'
 module PrintMe
   class App < Sinatra::Base
     LOCK_FILE = 'printing.lock'
-    PID_FILE  = 'tmp/make.pid'
-    LOG_FILE  = 'tmp/make.log'
+    PID_FILE  = File.join('tmp', 'make.pid')
+    LOG_FILE  = File.join('tmp', 'make.log')
 
     ## Config
     set :static, true
