@@ -83,7 +83,7 @@ module PrintMe
       end
     end
 
-    delete '/lock' do
+    post '/unlock' do
       require_basic_auth
       if File.exist?(LOCK_FILE)
         File.delete(LOCK_FILE)
