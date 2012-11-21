@@ -1,13 +1,14 @@
 #!/usr/bin/env ruby
 
 require 'bundler'
-require 'sinatra'
-require 'sinatra-basicauth'
-require './server/lib/download'
+Bundler.require
+require_relative 'lib/download'
 
 module PrintMe
   class App < Sinatra::Base
-    LOCK_FILE = 'printing.lock'
+    LOCK_FILE = File.join('tmp', 'printing.lock')
+    PID_FILE  = File.join('tmp', 'make.pid')
+    LOG_FILE  = File.join('tmp', 'make.log')
 
     ## Config
     set :static, true
@@ -42,22 +43,34 @@ module PrintMe
         reason = File.open(LOCK_FILE, 'r') { |f| f.read }
         halt 423, reason
       else
-        File.open(LOCK_FILE, 'w+') { |f| f.write "Currently printing" }
+        File.open(LOCK_FILE, 'w') { |f| f.write "Currently printing" }
       end
 
-      stl_url = params[:url]
+      stl_url  = params[:url]
+      stl_file = 'data/print.stl'
+      PrintMe::Download.new(stl_url, stl_file).fetch
+      makefile = File.join(File.dirname(__FILE__), '..', 'Makefile')
+      make_stl = [ "make", "#{File.dirname(stl_file)}/#{File.basename(stl_file, '.stl')};",
+                   "rm #{PID_FILE}"].join(" ")
+
       begin
-        PrintMe::Download.new(stl_url, 'data/print.stl').fetch
-        if system('make data/print')
-          status 201
-          "Thing printed! Go pick it up"
-        else
+        pid = Process.spawn(make_stl, :err => :out, :out => LOG_FILE)
+        File.open(PID_FILE, 'w') { |f| f.write pid }
+        Timeout::timeout(5) do
+          Process.wait pid
+          File.delete(PID_FILE)
           status 500
-          "Failed to print"
+          "Process died within 5 seconds with exit status #{$?.exitstatus}"
         end
-      ensure
-        File.delete('data/print.stl')
+      rescue Timeout::Error
+        status 200
+        "Looks like it's printing correctly"
       end
+    end
+
+    get '/log' do
+      content_type :text
+      File.read(LOG_FILE)
     end
 
     get '/lock' do
@@ -73,9 +86,15 @@ module PrintMe
 
     post '/unlock' do
       require_basic_auth
-      File.delete(LOCK_FILE) if File.exist?(LOCK_FILE)
-      status 200
-      "Lock cleared!"
+      # If process is still running, don't allow an unlock
+      if File.exist?(LOCK_FILE) && !File.exist?(PID_FILE)
+        File.delete(LOCK_FILE)
+        status 200
+        "Lock cleared!"
+      else
+        status 404
+        "No lock found"
+      end
     end
   end
 end
