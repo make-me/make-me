@@ -7,7 +7,7 @@ require_relative 'lib/download'
 
 module PrintMe
   class App < Sinatra::Base
-    LOCK_FILE = 'printing.lock'
+    LOCK_FILE = File.join('tmp', 'printing.lock')
     PID_FILE  = File.join('tmp', 'make.pid')
     LOG_FILE  = File.join('tmp', 'make.log')
 
