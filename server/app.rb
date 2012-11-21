@@ -87,6 +87,7 @@ module PrintMe
       require_basic_auth
       if File.exist?(LOCK_FILE)
         File.delete(LOCK_FILE)
+        File.delete(PID_FILE) if File.exist?(PID_FILE)
         status 200
         "Lock cleared!"
       else
