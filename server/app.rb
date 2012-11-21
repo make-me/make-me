@@ -69,6 +69,7 @@ module PrintMe
     end
 
     get '/log' do
+      content_type :text
       File.read(LOG_FILE)
     end
 
