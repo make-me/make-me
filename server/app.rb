@@ -86,9 +86,9 @@ module PrintMe
 
     post '/unlock' do
       require_basic_auth
-      if File.exist?(LOCK_FILE)
+      # If process is still running, don't allow an unlock
+      if File.exist?(LOCK_FILE) && !File.exist?(PID_FILE)
         File.delete(LOCK_FILE)
-        File.delete(PID_FILE) if File.exist?(PID_FILE)
         status 200
         "Lock cleared!"
       else
