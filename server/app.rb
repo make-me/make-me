@@ -50,8 +50,7 @@ module PrintMe
       stl_file = 'data/print.stl'
       PrintMe::Download.new(stl_url, stl_file).fetch
       makefile = File.join(File.dirname(__FILE__), '..', 'Makefile')
-      make_stl = [ "make", "--file=#{makefile}",
-                   "#{File.dirname(stl_file)}/#{File.basename(stl_file, '.stl')}",
+      make_stl = [ "make", "#{File.dirname(stl_file)}/#{File.basename(stl_file, '.stl')}",
                    "| tee #{LOG_FILE}"].join " "
 
       begin
