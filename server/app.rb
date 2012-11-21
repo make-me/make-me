@@ -3,7 +3,7 @@
 require 'bundler'
 require 'sinatra'
 require 'sinatra-basicauth'
-require './server/lib/download'
+require_relative 'lib/download'
 
 module PrintMe
   class App < Sinatra::Base
