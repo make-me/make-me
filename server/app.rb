@@ -57,6 +57,7 @@ module PrintMe
         File.open(PID_FILE, 'w') { |f| f.write pid }
         Timeout::timeout(5) do
           Process.wait pid
+          File.delete(PID_FILE)
           status 500
           "Process died within 5 seconds with exit status #{$?.exitstatus}"
         end
@@ -82,11 +83,16 @@ module PrintMe
       end
     end
 
-    post '/unlock' do
+    delete '/lock' do
       require_basic_auth
-      File.delete(LOCK_FILE) if File.exist?(LOCK_FILE)
-      status 200
-      "Lock cleared!"
+      if File.exist?(LOCK_FILE)
+        File.delete(LOCK_FILE)
+        status 200
+        "Lock cleared!"
+      else
+        status 404
+        "No lock found"
+      end
     end
   end
 end
