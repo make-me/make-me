@@ -1,8 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'bundler'
-require 'sinatra'
-require 'sinatra-basicauth'
+Bundler.require
 require_relative 'lib/download'
 
 module PrintMe
