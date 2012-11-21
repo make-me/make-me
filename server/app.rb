@@ -8,6 +8,7 @@ require_relative 'lib/download'
 module PrintMe
   class App < Sinatra::Base
     LOCK_FILE = 'printing.lock'
+    PID_FILE  = 'tmp/make.pid'
 
     ## Config
     set :static, true
@@ -45,18 +46,24 @@ module PrintMe
         File.open(LOCK_FILE, 'w+') { |f| f.write "Currently printing" }
       end
 
-      stl_url = params[:url]
+      stl_url  = params[:url]
+      stl_file = 'data/print.stl'
+      PrintMe::Download.new(stl_url, stl_file).fetch
+      makefile = File.join(File.dirname(__FILE__), '..', 'Makefile')
+      make_stl = [ "make", "--file=#{makefile}",
+                   "#{File.dirname(stl_file)}/#{File.basename(stl_file, '.stl')}" ]
+
       begin
-        PrintMe::Download.new(stl_url, 'data/print.stl').fetch
-        if system('make data/print')
-          status 201
-          "Thing printed! Go pick it up"
-        else
+        Timeout::timeout(5) do
+          pid = Process.spawn(*make_stl)
+          File.open(PID_FILE, 'w') { |f| f.write pid }
+          Process.wait pid
           status 500
-          "Failed to print"
+          "Process died within 5 seconds with exit status #{$?.exitstatus}"
         end
-      ensure
-        File.delete('data/print.stl')
+      rescue Timeout::Error
+        status 200
+        "Looks like it's printing correctly"
       end
     end
 
