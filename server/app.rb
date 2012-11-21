@@ -9,6 +9,7 @@ module PrintMe
   class App < Sinatra::Base
     LOCK_FILE = 'printing.lock'
     PID_FILE  = 'tmp/make.pid'
+    LOG_FILE  = 'tmp/make.log'
 
     ## Config
     set :static, true
@@ -51,11 +52,12 @@ module PrintMe
       PrintMe::Download.new(stl_url, stl_file).fetch
       makefile = File.join(File.dirname(__FILE__), '..', 'Makefile')
       make_stl = [ "make", "--file=#{makefile}",
-                   "#{File.dirname(stl_file)}/#{File.basename(stl_file, '.stl')}" ]
+                   "#{File.dirname(stl_file)}/#{File.basename(stl_file, '.stl')}",
+                   "| tee #{LOG_FILE}"].join " "
 
       begin
         Timeout::timeout(5) do
-          pid = Process.spawn(*make_stl)
+          pid = Process.spawn(make_stl)
           File.open(PID_FILE, 'w') { |f| f.write pid }
           Process.wait pid
           status 500
