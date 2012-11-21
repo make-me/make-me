@@ -55,9 +55,9 @@ module PrintMe
                    "| tee #{LOG_FILE}"].join " "
 
       begin
+        pid = Process.spawn(make_stl)
+        File.open(PID_FILE, 'w') { |f| f.write pid }
         Timeout::timeout(5) do
-          pid = Process.spawn(make_stl)
-          File.open(PID_FILE, 'w') { |f| f.write pid }
           Process.wait pid
           status 500
           "Process died within 5 seconds with exit status #{$?.exitstatus}"
