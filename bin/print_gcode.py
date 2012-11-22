@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from datetime import datetime
 import os
 import sys
 lib_path = os.path.abspath(os.path.dirname(__file__) + '/../vendor/s3g')
@@ -50,14 +51,18 @@ if options.sequences:
     for line in start_gcode:
         parser.execute_line(line)
 
-print "==> Starting gcode stream"
+print "==%s==> Starting gcode stream" % datetime.now()
 with open(options.filename) as f:
     lines = list(f)
     num_lines = len(lines)
     for n, line in enumerate(lines):
         parser.execute_line(line)
-        print "==> Sent %d/%d [%d%%]" % (n, num_lines, (n / num_lines) * 100)
-print "==> Gcode stream finished"
+        percent = (n / num_lines) * 100
+        print "==> Sent %d/%d [%d%%]" % (n, num_lines, percent)
+        if percent % 10 == 0:
+            print "==%s==> %d%%" % percent
+
+print "==%s==> Gcode stream finished" % datetime.now()
 
 
 if options.sequences:
