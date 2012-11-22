@@ -4,7 +4,7 @@ USB ?= $(shell ls /dev/ | grep tty.usbmodem | head -1)
 
 ## Apps
 GRUE ?= bin/miracle_grue
-PRINT ?= python print_gcode_file.py -m "The Replicator 2" -p /dev/$(USB) -f
+PRINT ?= $(ROOT)/bin/print_gcode
 
 ## What are we making?
 THING_DIR = $(realpath $(shell dirname $(MAKECMDGOALS)))
@@ -17,7 +17,7 @@ ifneq ($(words $(MAKECMDGOALS)), 1)
 endif
 	@[[ -c /dev/$(USB) ]] || { echo "No USB device found"; exit 1; }
 	@echo "Printing"
-	(cd vendor/s3g; . virtualenv/bin/activate; cd examples; $(PRINT) $(realpath $^))
+	$(PRINT) $(realpath $^)
 
 
 %.gcode: %.stl
