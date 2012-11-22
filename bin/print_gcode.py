@@ -58,9 +58,7 @@ with open(options.filename) as f:
     for n, line in enumerate(lines):
         parser.execute_line(line)
         percent = (n / num_lines) * 100
-        print "==> Sent %d/%d [%d%%]" % (n, num_lines, percent)
-        if percent % 10 == 0:
-            print "==%s==> %d%%" % percent
+        print "==%s==> Sent %d/%d [%d%%]" % (datetime.now(), n, num_lines, percent)
 
 print "==%s==> Gcode stream finished" % datetime.now()
 
