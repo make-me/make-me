@@ -4,7 +4,7 @@ USB ?= $(shell ls /dev/ | grep tty.usbmodem | head -1)
 
 ## Apps
 GRUE ?= bin/miracle_grue
-PRINT ?= $(ROOT)/bin/print_gcode
+PRINT ?= $(ROOT)/bin/print_gcode -m "The Replicator 2" -p /dev/$(USB) -f
 
 ## What are we making?
 THING_DIR = $(realpath $(shell dirname $(MAKECMDGOALS)))
