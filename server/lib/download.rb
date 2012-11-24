@@ -1,4 +1,5 @@
 require_relative 'open-uri'
+require 'nokogiri'
 
 module PrintMe
   class Download
@@ -23,6 +24,12 @@ module PrintMe
       if md = url.match(%r{tinkercad\.com/things/(\w+)-[^/]+/$})
         thing_id = md[1]
         url = "https://tinkercad.com/things/#{thing_id}/polysoup.stl"
+      elsif md = url.match(%r{thingiverse\.com/thing:\d+$})
+        doc  = Nokogiri::HTML.parse(open(url))
+        stls = doc.search('#thing-files a')
+        if link = stls.first
+          url = 'http://www.thingiverse.com' + link.attribute('href').value
+        end
       end
 
       url
