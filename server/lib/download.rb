@@ -27,7 +27,7 @@ module PrintMe
       elsif md = url.match(%r{thingiverse\.com/thing:\d+$})
         doc  = Nokogiri::HTML.parse(open(url))
         stls = doc.search('#thing-files a')
-        if link = stls.first
+        if stls.length == 1 && link = stls.first
           url = 'http://www.thingiverse.com' + link.attribute('href').value
         end
       end
