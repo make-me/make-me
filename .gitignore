@@ -2,3 +2,5 @@
 data/
 tmp/
 printing.lock
+bin/*
+!bin/print_gcode*
