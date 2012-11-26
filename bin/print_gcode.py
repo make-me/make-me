@@ -61,6 +61,7 @@ with open(options.filename) as f:
         percent = round(float(n) / float(num_lines) * 100.0)
         if n % interval == 0:
             print "==%s==> Sent %d/%d [%d%%]" % (datetime.now(), n, num_lines, percent)
+            sys.stdout.flush()
 
 print "==%s==> Gcode stream finished" % datetime.now()
 
