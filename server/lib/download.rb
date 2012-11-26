@@ -1,5 +1,3 @@
-require_relative 'open-uri'
-
 module PrintMe
   class Download
     attr_reader :url
@@ -10,8 +8,9 @@ module PrintMe
     end
 
     def fetch
-      open(output_file, 'wb') do |file|
-        file.print open(thing_url, :allow_unsafe_redirects => true).read
+      Curl::Easy.download(thing_url, output_file) do |c|
+        c.follow_location = true
+        c.max_redirects   = 10
       end
     end
 
