@@ -1,0 +1,6 @@
+#!/bin/sh
+ROOT=`dirname "$0"`/..
+
+. $ROOT/vendor/s3g/virtualenv/bin/activate
+
+$ROOT/bin/print_gcode.py "$@"
