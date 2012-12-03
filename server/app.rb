@@ -67,6 +67,20 @@ module PrintMe
       end
     end
 
+    post '/kill' do
+      require_basic_auth
+      if true #File.exist?(PID_FILE)
+        pid = File.open(PID_FILE, 'r') { |f| f.read }.to_i
+        out = Process.kill("HUP", pid)
+        File.delete(PID_FILE)
+        status 200
+        "Killed job, exited with status #{out}"
+      else
+        status 404
+        "No process running"
+      end
+    end
+
     get '/log' do
       content_type :text
       File.read(LOG_FILE)
