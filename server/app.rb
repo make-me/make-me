@@ -69,7 +69,7 @@ module PrintMe
 
     post '/kill' do
       require_basic_auth
-      if true #File.exist?(PID_FILE)
+      if File.exist?(PID_FILE)
         pid = File.open(PID_FILE, 'r') { |f| f.read }.to_i
         out = Process.kill("HUP", pid)
         File.delete(PID_FILE)
