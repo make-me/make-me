@@ -73,7 +73,7 @@ module PrintMe
         # Kill all pid files. Each process drops one
         Dir['tmp/*.pid'].each do |pid_file|
           pid = File.open(PID_FILE, 'r') { |f| f.read }.to_i
-          Process.kill("HUP", pid)
+          Process.kill("SIGINT", pid)
           File.delete(pid_file)
         end
 
