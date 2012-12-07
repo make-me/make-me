@@ -17,12 +17,23 @@ ifneq ($(words $(MAKECMDGOALS)), 1)
 endif
 	@[[ -c /dev/$(USB) ]] || { echo "No USB device found"; exit 1; }
 	@echo "Printing"
-	$(PRINT) $(realpath $^)
+	(                                     \
+		$(PRINT) $(realpath $^) &         \
+		echo $$1 > $(ROOT)/run/print.pid; \
+		wait `cat $(ROOT)/run/print.pid`; \
+		rm $(ROOT)/run/print.pid
+	)
 
 
 %.gcode: %.stl
 	@echo "Building gcode: At[$@] In[$^]"
-	(cd vendor/Miracle-Grue/; $(GRUE) -s /dev/null -e /dev/null -o "$(realpath $(dir $@))/$(notdir $@)" "$(realpath $^)")
+	(                                                                                                \
+		cd vendor/Miracle-Grue/;                                                                     \
+		$(GRUE) -s /dev/null -e /dev/null -o "$(realpath $(dir $@))/$(notdir $@)" "$(realpath $^)" & \
+		echo $$1 > $(ROOT)/run/slice.pid;                                                            \
+		wait `cat $(ROOT)/run/slice.pid`;                                                            \
+		rm $(ROOT)/run/slice.pid;                                                                    \
+	)
 
 ## Plumbing
 init:
