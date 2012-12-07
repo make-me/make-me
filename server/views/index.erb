@@ -1,0 +1,62 @@
+<div class="page-header">
+  <h1>MAKE ME.</h1>
+</div>
+
+<div class="row">
+  <p class="lead span6"><i class="icon-lock"></i> The lock is:
+    <% if @is_locked %>
+    <span class="label label-important">locked</span> - wait your turn.
+    <% else %>
+    <span class="label label-success">free</span> - go nuts!
+    <% end %>
+  </p>
+</div>
+
+<div class="row">
+  <div class="span5">
+    <h3>Current print</h3>
+    <% if @current_model %>
+    <!-- TODO -->
+    <script type="text/javascript">
+      $(document).ready(function(){
+      window.app.renderSTL(<%= @current_model %>);
+      });
+    </script>
+
+    <% else %>
+    <p>
+      Either nothing is printing or this isn't implemented yet - have an octocat.
+      <script type="text/javascript">
+        $(document).ready(function(){
+        window.app.renderOctocat();
+        });
+      </script>
+
+    </p>
+    <% end %>
+    <div id="stl-viewer" style="width:300;height:300px;">
+    </div>
+
+    <h3>Progress</h3>
+    <div class="progress progress-striped active">
+      <div class="bar" style="width:<%= @progress %>%"></div>
+    </div>
+
+  </div>
+
+  <div class="span7">
+    <h3>Current log</h3>
+    <p>
+      This is the raw output of the build script. Neat-o
+    </p>
+    <pre>
+      <%= @current_log || "No log, soz" %>
+    </pre>
+  </div>
+
+</div>
+
+
+<div id="push"></div>
+
+</div>
