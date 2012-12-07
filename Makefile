@@ -21,7 +21,7 @@ endif
 		$(PRINT) $(realpath $^) &         \
 		echo $$1 > $(ROOT)/tmp/print.pid; \
 		wait `cat $(ROOT)/tmp/print.pid`; \
-		rm $(ROOT)/tmp/print.pid
+		rm $(ROOT)/tmp/print.pid;         \
 	)
 
 
