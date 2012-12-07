@@ -70,11 +70,15 @@ module PrintMe
     post '/kill' do
       require_basic_auth
       if File.exist?(PID_FILE)
-        pid = File.open(PID_FILE, 'r') { |f| f.read }.to_i
-        out = Process.kill("HUP", pid)
-        File.delete(PID_FILE)
+        # Kill all pid files. Each process drops one
+        Dir['tmp/*.pid'].each do |pid_file|
+          pid = File.open(PID_FILE, 'r') { |f| f.read }.to_i
+          Process.kill("HUP", pid)
+          File.delete(pid_file)
+        end
+
         status 200
-        "Killed job, exited with status #{out}"
+        "Killed print process!"
       else
         status 404
         "No process running"
