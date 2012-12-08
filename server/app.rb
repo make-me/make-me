@@ -19,10 +19,43 @@ module PrintMe
       password 'isalive'
     end
 
+    ## Helpers
+
+    def locked?
+      File.exist?(LOCK_FILE) && File.read(LOCK_FILE)
+    end
+
+    def progress
+      progress = 0
+      File.readlines(LOG_FILE).each do |line|
+        matches = line.strip.scan /Sent \d+\/\d+ \[(\d+)%\]/
+        puts line.inspect
+        puts matches.inspect
+        matches.length > 0 && progress = matches[0][0].to_i
+      end
+      progress
+    end
+
     ## Routes/Public
     get '/' do
-      status 200
-      "make_me version F.U-bro"
+      @is_locked = locked?
+      begin
+        @current_log = File.read(LOG_FILE)
+      rescue Errno::ENOENT
+      end
+      @progress = progress
+      erb :index
+    end
+
+    get '/public_lock' do
+      # doesn't expose contents of lockfile, i assume that's why /lock is authed
+      if locked?
+        status 423
+        "Locked"
+      else
+        status 200
+        "Unlocked"
+      end
     end
 
     get '/photo' do
@@ -36,12 +69,15 @@ module PrintMe
       redirect out_name
     end
 
+    get '/progress' do
+      progress
+    end
+
     ## Routes/Authed
     post '/print' do
       require_basic_auth
-      if File.exist?(LOCK_FILE)
-        reason = File.open(LOCK_FILE, 'r') { |f| f.read }
-        halt 423, reason
+      if locked?
+        halt 423, locked? # halt_on_lock helper?
       else
         File.open(LOCK_FILE, 'w') { |f| f.write "Currently printing" }
       end
@@ -88,9 +124,8 @@ module PrintMe
 
     get '/lock' do
       require_basic_auth
-      if File.exist?(LOCK_FILE)
-        status 423
-        File.open(LOCK_FILE, 'r') { |f| f.read }
+      if locked?
+        halt 423, locked?
       else
         status 200
         "Unlocked"
