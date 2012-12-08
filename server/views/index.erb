@@ -15,17 +15,17 @@
 <div class="row">
   <div class="span5">
     <h3>Current print</h3>
-    <% if @current_model %>
+    <% if @is_locked %>
     <!-- TODO -->
     <script type="text/javascript">
       $(document).ready(function(){
-      window.app.renderSTL(<%= @current_model %>);
+      window.app.renderSTL('/current_model');
       });
     </script>
 
     <% else %>
     <p>
-      Either nothing is printing or this isn't implemented yet - have an octocat.
+      Nothing is printing - have a wiretocat.
       <script type="text/javascript">
         $(document).ready(function(){
         window.app.renderOctocat();

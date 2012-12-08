@@ -9,6 +9,7 @@ module PrintMe
     LOCK_FILE = File.join('tmp', 'printing.lock')
     PID_FILE  = File.join('tmp', 'make.pid')
     LOG_FILE  = File.join('tmp', 'make.log')
+    CURRENT_MODEL_FILE = File.join('data', 'print.stl')
 
     ## Config
     set :static, true
@@ -56,6 +57,16 @@ module PrintMe
       end
     end
 
+    get '/current_model' do
+      if File.exist?(CURRENT_MODEL_FILE)
+        content_type "application/sla"
+        send_file CURRENT_MODEL_FILE
+      else
+        status 404
+        "not found"
+      end
+    end
+
     get '/photo' do
       imagesnap = File.join(File.dirname(__FILE__), '..', 'vendor', 'imagesnap', 'imagesnap')
 
@@ -81,7 +92,7 @@ module PrintMe
       end
 
       stl_url  = params[:url]
-      stl_file = 'data/print.stl'
+      stl_file = CURRENT_MODEL_FILE
       PrintMe::Download.new(stl_url, stl_file).fetch
       makefile = File.join(File.dirname(__FILE__), '..', 'Makefile')
       make_stl = [ "make", "#{File.dirname(stl_file)}/#{File.basename(stl_file, '.stl')};",
