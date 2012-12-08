@@ -29,8 +29,6 @@ module PrintMe
       progress = 0
       File.readlines(LOG_FILE).each do |line|
         matches = line.strip.scan /Sent \d+\/\d+ \[(\d+)%\]/
-        puts line.inspect
-        puts matches.inspect
         matches.length > 0 && progress = matches[0][0].to_i
       end
       progress
