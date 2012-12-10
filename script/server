@@ -8,5 +8,5 @@ script/bootstrap
 if [[ $RACK_ENV == 'development' ]]; then
   bin/shotgun
 else
-  bin/rackup
+  bin/unicorn
 fi
