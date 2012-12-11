@@ -147,7 +147,12 @@ module PrintMe
     post '/unlock' do
       require_basic_auth
       # If process is still running, don't allow an unlock
-      if File.exist?(LOCK_FILE) && !File.exist?(PID_FILE)
+      pid = File.open(PID_FILE, 'r') { |f| f.gets }.chomp
+      running = Process.kill 0, pid
+      if running
+        status 403
+        "Currently printing. You cannot unlock right now."
+      elsif File.exist?(LOCK_FILE)
         File.delete(LOCK_FILE)
         status 200
         "Lock cleared!"
