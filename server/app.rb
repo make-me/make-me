@@ -152,12 +152,12 @@ module PrintMe
       # If process is still running, don't allow an unlock
       if File.exists? PID_FILE
         pid = File.open(PID_FILE, 'r') { |f| f.read }.to_i
-        running = Process.kill 0, pid
-        if running
-          status 403
-          "Currently printing. You cannot unlock right now."
-        else
+        begin
+          Process.kill(0, pid)
+        rescue Errno::ESRCH
           File.delete(PID_FILE) # Remove stale pid
+        else
+          halt 403, "Currently printing. You cannot unlock right now."
         end
       elsif File.exist?(LOCK_FILE)
         File.delete(LOCK_FILE)
