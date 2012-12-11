@@ -2,6 +2,7 @@
 
 require 'bundler'
 Bundler.require
+require 'timeout'
 require_relative 'lib/download'
 
 module PrintMe
