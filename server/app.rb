@@ -33,7 +33,6 @@ module PrintMe
 
     ## Routes/Public
     get '/' do
-      @is_locked = locked?
       begin
         @current_log = File.read(LOG_FILE) if File.exists?(LOG_FILE)
       rescue Errno::ENOENT
