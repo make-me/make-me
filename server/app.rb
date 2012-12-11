@@ -16,9 +16,9 @@ module PrintMe
     set :static, true
 
     basic_auth do
-      realm "The 3rd Dimension"
-      username 'hubot'
-      password 'isalive'
+      realm 'The 3rd Dimension'
+      username ENV['MAKE_ME_USERNAME'] || 'hubot'
+      password ENV['MAKE_ME_PASSWORD'] || 'isalive'
     end
 
     ## Helpers
