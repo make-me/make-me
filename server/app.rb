@@ -147,7 +147,7 @@ module PrintMe
     post '/unlock' do
       require_basic_auth
       # If process is still running, don't allow an unlock
-      pid = File.open(PID_FILE, 'r') { |f| f.gets }.chomp
+      pid = File.open(PID_FILE, 'r') { |f| f.read }.to_i
       running = Process.kill 0, pid
       if running
         status 403
