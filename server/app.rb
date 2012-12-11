@@ -9,6 +9,7 @@ module PrintMe
     LOCK_FILE = File.join('tmp', 'printing.lock')
     PID_FILE  = File.join('tmp', 'make.pid')
     LOG_FILE  = File.join('tmp', 'make.log')
+    CURRENT_MODEL_FILE = File.join('data', 'print.stl')
 
     ## Config
     set :static, true
@@ -19,10 +20,51 @@ module PrintMe
       password 'isalive'
     end
 
+    ## Helpers
+
+    def locked?
+      File.exist?(LOCK_FILE) && File.read(LOCK_FILE)
+    end
+
+    def progress
+      progress = 0
+      File.readlines(LOG_FILE).each do |line|
+        matches = line.strip.scan /Sent \d+\/\d+ \[(\d+)%\]/
+        matches.length > 0 && progress = matches[0][0].to_i
+      end
+      progress
+    end
+
     ## Routes/Public
     get '/' do
-      status 200
-      "make_me version F.U-bro"
+      @is_locked = locked?
+      begin
+        @current_log = File.read(LOG_FILE)
+      rescue Errno::ENOENT
+      end
+      @progress = progress
+      erb :index
+    end
+
+    get '/public_lock' do
+      # doesn't expose contents of lockfile, i assume that's why /lock is authed
+      if locked?
+        status 423
+        "Locked"
+      else
+        status 200
+        "Unlocked"
+      end
+    end
+
+    get '/current_model' do
+      if File.exist?(CURRENT_MODEL_FILE)
+        content_type "application/sla"
+        send_file CURRENT_MODEL_FILE
+      else
+        status 404
+        "not found"
+      end
     end
 
     get '/photo' do
@@ -36,18 +78,21 @@ module PrintMe
       redirect out_name
     end
 
+    get '/progress' do
+      progress
+    end
+
     ## Routes/Authed
     post '/print' do
       require_basic_auth
-      if File.exist?(LOCK_FILE)
-        reason = File.open(LOCK_FILE, 'r') { |f| f.read }
-        halt 423, reason
+      if locked?
+        halt 423, locked? # halt_on_lock helper?
       else
         File.open(LOCK_FILE, 'w') { |f| f.write "Currently printing" }
       end
 
       stl_url  = params[:url]
-      stl_file = 'data/print.stl'
+      stl_file = CURRENT_MODEL_FILE
       PrintMe::Download.new(stl_url, stl_file).fetch
       makefile = File.join(File.dirname(__FILE__), '..', 'Makefile')
       make_stl = [ "make", "#{File.dirname(stl_file)}/#{File.basename(stl_file, '.stl')};",
@@ -93,9 +138,8 @@ module PrintMe
 
     get '/lock' do
       require_basic_auth
-      if File.exist?(LOCK_FILE)
-        status 423
-        File.open(LOCK_FILE, 'r') { |f| f.read }
+      if locked?
+        halt 423, locked?
       else
         status 200
         "Unlocked"
