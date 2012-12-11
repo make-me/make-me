@@ -8,5 +8,5 @@ script/bootstrap
 if [[ $RACK_ENV == 'development' ]]; then
   bin/shotgun
 else
-  bin/unicorn
+  bin/unicorn -c server/config/unicorn.rb
 fi
