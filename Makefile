@@ -19,7 +19,7 @@ endif
 	@echo "Printing"
 	(                                     \
 		$(PRINT) $(realpath $^) &         \
-		echo $$1 > $(ROOT)/tmp/print.pid; \
+		echo $$! > $(ROOT)/tmp/print.pid; \
 		wait `cat $(ROOT)/tmp/print.pid`; \
 		rm $(ROOT)/tmp/print.pid;         \
 	)
@@ -30,7 +30,7 @@ endif
 	(                                                                                                \
 		cd vendor/Miracle-Grue/;                                                                     \
 		$(GRUE) -s /dev/null -e /dev/null -o "$(realpath $(dir $@))/$(notdir $@)" "$(realpath $^)" & \
-		echo $$1 > $(ROOT)/tmp/slice.pid;                                                            \
+		echo $$! > $(ROOT)/tmp/slice.pid;                                                            \
 		wait `cat $(ROOT)/tmp/slice.pid`;                                                            \
 		rm $(ROOT)/tmp/slice.pid;                                                                    \
 	)
