@@ -20,24 +20,24 @@ module PrintMe
       password ENV['MAKE_ME_PASSWORD'] || 'isalive'
     end
 
-    def progress
-      progress = 0
-      if File.exists?(LOG_FILE)
-        File.readlines(LOG_FILE).each do |line|
-          matches = line.strip.scan /Sent \d+\/\d+ \[(\d+)%\]/
-          matches.length > 0 && progress = matches[0][0].to_i
+    helpers do
+      def progress
+        progress = 0
+        if File.exists?(LOG_FILE)
+          File.readlines(LOG_FILE).each do |line|
+            matches = line.strip.scan /Sent \d+\/\d+ \[(\d+)%\]/
+            matches.length > 0 && progress = matches[0][0].to_i
+          end
         end
+        progress
       end
-      progress
     end
 
-    ## Routes/Public
     get '/' do
       begin
         @current_log = File.read(LOG_FILE) if File.exists?(LOG_FILE)
       rescue Errno::ENOENT
       end
-      @progress = progress
       erb :index
     end
 
@@ -60,10 +60,6 @@ module PrintMe
       Process.wait Process.spawn(imagesnap, File.join(out_dir, out_name))
 
       redirect out_name
-    end
-
-    get '/progress' do
-      progress
     end
 
     ## Routes/Authed
