@@ -119,8 +119,6 @@ module PrintMe
         Dir['tmp/*.pid'].each do |pid_file|
           pid = File.open(PID_FILE, 'r') { |f| f.read }.to_i
           Process.kill("SIGINT", pid)
-          # Ensure all pids are cleaned up
-          File.delete(pid_file) if File.exist?(pid_file)
         end
 
         status 200
