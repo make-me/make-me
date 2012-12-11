@@ -2,17 +2,6 @@ module PrintMe
   class App
     LOCK_FILE = File.join('tmp', 'printing.lock')
 
-    get '/public_lock' do
-      # doesn't expose contents of lockfile, i assume that's why /lock is authed
-      if locked?
-        status 423
-        "Locked"
-      else
-        status 200
-        "Unlocked"
-      end
-    end
-
     get '/lock' do
       require_basic_auth
       if locked?
