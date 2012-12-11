@@ -29,9 +29,11 @@ module PrintMe
 
     def progress
       progress = 0
-      File.readlines(LOG_FILE).each do |line|
-        matches = line.strip.scan /Sent \d+\/\d+ \[(\d+)%\]/
-        matches.length > 0 && progress = matches[0][0].to_i
+      if File.exists?(LOG_FILE)
+        File.readlines(LOG_FILE).each do |line|
+          matches = line.strip.scan /Sent \d+\/\d+ \[(\d+)%\]/
+          matches.length > 0 && progress = matches[0][0].to_i
+        end
       end
       progress
     end
@@ -40,7 +42,7 @@ module PrintMe
     get '/' do
       @is_locked = locked?
       begin
-        @current_log = File.read(LOG_FILE)
+        @current_log = File.read(LOG_FILE) if File.exists?(LOG_FILE)
       rescue Errno::ENOENT
       end
       @progress = progress
@@ -129,7 +131,7 @@ module PrintMe
 
     get '/log' do
       content_type :text
-      File.read(LOG_FILE)
+      File.read(LOG_FILE) if File.exists?(LOG_FILE)
     end
 
     get '/lock' do
