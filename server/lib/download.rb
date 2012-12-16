@@ -19,7 +19,7 @@ module PrintMe
     def thing_url
       url = @url
 
-      if md = url.match(%r{tinkercad\.com/things/(\w+)-[^/]+/$})
+      if md = url.match(%r{tinkercad\.com/things/(\w+)-[^/]+/?$})
         thing_id = md[1]
         url = "https://tinkercad.com/things/#{thing_id}/polysoup.stl"
       end
