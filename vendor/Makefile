@@ -3,6 +3,12 @@
 all: | brews
 	$(MAKE) grue
 	$(MAKE) s3g
+	$(MAKE) stltwalker
+
+## stltwalker build
+stltwalker: stltwalker/stltwalker
+stltwalker/stltwalker:
+	make -C stltwalker
 
 ## Grue build
 grue: Miracle-Grue/bin/miracle_grue
