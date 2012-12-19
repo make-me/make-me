@@ -4,7 +4,7 @@
 
 <div class="row">
   <p class="lead span6"><i class="icon-lock"></i> The lock is:
-    <% if @is_locked %>
+    <% if locked? %>
     <span class="label label-important">locked</span> - wait your turn.
     <% else %>
     <span class="label label-success">free</span> - go nuts!
@@ -15,7 +15,7 @@
 <div class="row">
   <div class="span5">
     <h3>Current print</h3>
-    <% if @is_locked %>
+    <% if locked? %>
     <!-- TODO -->
     <script type="text/javascript">
       $(document).ready(function(){
@@ -39,7 +39,7 @@
 
     <h3>Progress</h3>
     <div class="progress progress-striped active">
-      <div class="bar" style="width:<%= @progress %>%"></div>
+      <div class="bar" style="width:<%= progress %>%"></div>
     </div>
 
   </div>

@@ -7,7 +7,6 @@ require_relative 'lib/download'
 
 module PrintMe
   class App < Sinatra::Base
-    LOCK_FILE = File.join('tmp', 'printing.lock')
     PID_FILE  = File.join('tmp', 'make.pid')
     LOG_FILE  = File.join('tmp', 'make.log')
     CURRENT_MODEL_FILE = File.join('data', 'print.stl')
@@ -21,43 +20,25 @@ module PrintMe
       password ENV['MAKE_ME_PASSWORD'] || 'isalive'
     end
 
-    ## Helpers
-
-    def locked?
-      File.exist?(LOCK_FILE) && File.read(LOCK_FILE)
-    end
-
-    def progress
-      progress = 0
-      if File.exists?(LOG_FILE)
-        File.readlines(LOG_FILE).each do |line|
-          matches = line.strip.scan /Sent \d+\/\d+ \[(\d+)%\]/
-          matches.length > 0 && progress = matches[0][0].to_i
+    helpers do
+      def progress
+        progress = 0
+        if File.exists?(LOG_FILE)
+          File.readlines(LOG_FILE).each do |line|
+            matches = line.strip.scan /Sent \d+\/\d+ \[(\d+)%\]/
+            matches.length > 0 && progress = matches[0][0].to_i
+          end
         end
+        progress
       end
-      progress
     end
 
-    ## Routes/Public
     get '/' do
-      @is_locked = locked?
       begin
         @current_log = File.read(LOG_FILE) if File.exists?(LOG_FILE)
       rescue Errno::ENOENT
       end
-      @progress = progress
       erb :index
-    end
-
-    get '/public_lock' do
-      # doesn't expose contents of lockfile, i assume that's why /lock is authed
-      if locked?
-        status 423
-        "Locked"
-      else
-        status 200
-        "Unlocked"
-      end
     end
 
     get '/current_model' do
@@ -81,17 +62,13 @@ module PrintMe
       redirect out_name
     end
 
-    get '/progress' do
-      progress
-    end
-
     ## Routes/Authed
     post '/print' do
       require_basic_auth
       if locked?
         halt 423, locked? # halt_on_lock helper?
       else
-        File.open(LOCK_FILE, 'w') { |f| f.write "Currently printing" }
+        lock!
       end
 
       stl_url  = params[:url]
@@ -133,28 +110,7 @@ module PrintMe
       content_type :text
       File.read(LOG_FILE) if File.exists?(LOG_FILE)
     end
-
-    get '/lock' do
-      require_basic_auth
-      if locked?
-        halt 423, locked?
-      else
-        status 200
-        "Unlocked"
-      end
-    end
-
-    post '/unlock' do
-      require_basic_auth
-      # If process is still running, don't allow an unlock
-      if File.exist?(LOCK_FILE) && !File.exist?(PID_FILE)
-        File.delete(LOCK_FILE)
-        status 200
-        "Lock cleared!"
-      else
-        status 404
-        "No lock found"
-      end
-    end
   end
 end
+
+require_relative 'app/lock_file'
