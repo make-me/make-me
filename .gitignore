@@ -4,3 +4,4 @@ tmp/
 printing.lock
 bin/*
 !bin/print_gcode*
+ezlogger.txt
