@@ -9,6 +9,7 @@ module PrintMe
   class App < Sinatra::Base
     PID_FILE  = File.join('tmp', 'make.pid')
     LOG_FILE  = File.join('tmp', 'make.log')
+    FETCH_MODEL_FILE = File.join('data', 'fetch.stl')
     CURRENT_MODEL_FILE = File.join('data', 'print.stl')
 
     ## Config
@@ -73,13 +74,20 @@ module PrintMe
 
       stl_url  = params[:url]
       stl_file = CURRENT_MODEL_FILE
-      PrintMe::Download.new(stl_url, stl_file).fetch
+      PrintMe::Download.new(stl_url, FETCH_MODEL_FILE).fetch
+
+      ## Normalize the download
+      normalize = ['./vendor/stltwalker/stltwalker', '-p', '-o', stl_file, FETCH_MODEL_FILE]
+      pid = Process.spawn(*normalize, :err => :out, :out => [LOG_FILE, "w"])
+      _pid, status = Process.wait2 pid
+      halt 409, "Model normalize failed."  unless status.exitstatus == 0
+
       makefile = File.join(File.dirname(__FILE__), '..', 'Makefile')
       make_stl = [ "make", "#{File.dirname(stl_file)}/#{File.basename(stl_file, '.stl')};",
                    "rm #{PID_FILE}"].join(" ")
 
       begin
-        pid = Process.spawn(make_stl, :err => :out, :out => LOG_FILE)
+        pid = Process.spawn(make_stl, :err => :out, :out => [LOG_FILE, "a"])
         File.open(PID_FILE, 'w') { |f| f.write pid }
         Timeout::timeout(5) do
           Process.wait pid
