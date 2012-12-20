@@ -5,6 +5,7 @@ USB ?= $(shell ls /dev/ | grep tty.usbmodem | head -1)
 ## Apps
 GRUE ?= $(ROOT)/vendor/Miracle-Grue/bin/miracle_grue
 GRUE_CONFIG ?= default
+QUALITY ?= medium
 PRINT ?= $(ROOT)/bin/print_gcode -m "The Replicator 2" -p /dev/$(USB) -f
 
 ## What are we making?
@@ -29,7 +30,19 @@ endif
 %.gcode: %.stl
 	@echo "Building gcode: At[$@] In[$^]"
 	(                                                                                                \
+		LH=0.27;                                                                                     \
+		if [[ "$(QUALITY)" == "high" ]]; then                                                        \
+                LH=0.1;                                                                              \
+		fi;                                                                                          \
+		if [[ "$(QUALITY)" == "medium" ]]; then                                                      \
+                LH=0.27;                                                                             \
+		fi;                                                                                          \
+		if [[ "$(QUALITY)" == "low" ]]; then                                                         \
+                LH=0.34;                                                                             \
+		fi;                                                                                          \
+		echo "Slicing with "$(QUALITY)" quality. Line height: $$LH";                                 \
 		$(GRUE) -s /dev/null -e /dev/null -c $(ROOT)/config/grue-$(GRUE_CONFIG).config               \
+				-h "$$LH"                                                                            \
 				-o "$(realpath $(dir $@))/$(notdir $@)" "$(realpath $^)" &                           \
 		echo $$! > $(ROOT)/tmp/slice.pid;                                                            \
 		wait `cat $(ROOT)/tmp/slice.pid`;                                                            \
