@@ -76,6 +76,7 @@ module PrintMe
       count    = (params[:count] || 1).to_i
       grue_conf = (params[:config] || 'default')
       slice_quality = (params[:quality] || 'medium')
+      density = (params[:density] || 0.05).to_f
       stl_file = CURRENT_MODEL_FILE
       PrintMe::Download.new(stl_url, FETCH_MODEL_FILE).fetch
 
@@ -90,7 +91,7 @@ module PrintMe
       _pid, status = Process.wait2 pid
       halt 409, "Model normalize failed."  unless status.exitstatus == 0
 
-      make_params = ["GRUE_CONFIG=#{grue_conf}", "QUALITY=#{slice_quality}"]
+      make_params = ["GRUE_CONFIG=#{grue_conf}", "QUALITY=#{slice_quality}", "DENSITY=#{density}"]
       makefile = File.join(File.dirname(__FILE__), '..', 'Makefile')
       make_stl = [ "make", *make_params, "#{File.dirname(stl_file)}/#{File.basename(stl_file, '.stl')};",
                    "rm #{PID_FILE}"].join(" ")
