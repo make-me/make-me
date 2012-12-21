@@ -74,6 +74,7 @@ module PrintMe
 
       stl_url  = params[:url]
       count    = (params[:count] || 1).to_i
+      scale    = (params[:scale] || 1.0).to_f
       grue_conf = (params[:config] || 'default')
       slice_quality = (params[:quality] || 'medium')
       density = (params[:density] || 0.05).to_f
@@ -86,7 +87,7 @@ module PrintMe
       }
 
       ## Normalize the download
-      normalize = ['./vendor/stltwalker/stltwalker', '-p', '-o', stl_file, *inputs]
+      normalize = ['./vendor/stltwalker/stltwalker', '-p', '-o', stl_file, "--scale=#{scale}", *inputs]
       pid = Process.spawn(*normalize, :err => :out, :out => [LOG_FILE, "w"])
       _pid, status = Process.wait2 pid
       halt 409, "Model normalize failed."  unless status.exitstatus == 0
