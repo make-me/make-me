@@ -20,11 +20,11 @@ ifneq ($(words $(MAKECMDGOALS)), 1)
 endif
 	@[[ -c /dev/$(USB) ]] || { echo "No USB device found"; exit 1; }
 	@echo "Printing"
-	(                                     \
-		$(PRINT) $(realpath $^) &         \
-		echo $$! > $(ROOT)/tmp/print.pid; \
-		wait `cat $(ROOT)/tmp/print.pid`; \
-		rm $(ROOT)/tmp/print.pid;         \
+	(                                       \
+		$(PRINT) $(realpath $^) &           \
+		echo $$! > $(ROOT)/tmp/print.pid;   \
+		wait `cat $(ROOT)/tmp/print.pid` && \
+		rm $(ROOT)/tmp/print.pid;           \
 	)
 
 
@@ -47,7 +47,7 @@ endif
 				-h "$$LH" -p $(DENSITY)                                                              \
 				-o "$(realpath $(dir $@))/$(notdir $@)" "$(realpath $^)" &                           \
 		echo $$! > $(ROOT)/tmp/slice.pid;                                                            \
-		wait `cat $(ROOT)/tmp/slice.pid`;                                                            \
+		wait `cat $(ROOT)/tmp/slice.pid` &&                                                          \
 		rm $(ROOT)/tmp/slice.pid;                                                                    \
 	)
 
