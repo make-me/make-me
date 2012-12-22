@@ -99,6 +99,11 @@ module PrintMe
         inputs.push stl_fetch
       }
 
+      input_set = inputs.dup
+      (1...count).each {
+        inputs.concat input_set
+      }
+
       ## Normalize the download
       stl_file = CURRENT_MODEL_FILE
       normalize = ['./vendor/stltwalker/stltwalker', '-p', '-o', stl_file, "--scale=#{scale}", *inputs]
