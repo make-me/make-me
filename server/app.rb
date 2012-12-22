@@ -3,6 +3,8 @@
 require 'bundler'
 Bundler.require
 require 'timeout'
+require 'active_support/core_ext'
+require 'json'
 require_relative 'lib/download'
 
 module PrintMe
@@ -72,21 +74,33 @@ module PrintMe
         lock!
       end
 
-      stl_url  = params[:url]
-      count    = (params[:count] || 1).to_i
-      scale    = (params[:scale] || 1.0).to_f
-      grue_conf = (params[:config] || 'default')
-      slice_quality = (params[:quality] || 'medium')
-      density = (params[:density] || 0.05).to_f
-      stl_file = CURRENT_MODEL_FILE
-      PrintMe::Download.new(stl_url, FETCH_MODEL_FILE).fetch
+      # Either parse a JSON body or use params[]
+      # as usual, using the unified `args' hash
+      # from here out
+      begin
+        jparams = JSON.parse(request.body.read).symbolize_keys
+      rescue
+      end
+      args = jparams || params
 
+      stl_url  = [*args[:url]]
+      count    = (args[:count] || 1).to_i
+      scale    = (args[:scale] || 1.0).to_f
+      grue_conf = (args[:config] || 'default')
+      slice_quality = (args[:quality] || 'medium')
+      density = (args[:density] || 0.05).to_f
+
+      ## Fetch all of the inputs
+      ## to temp files
       inputs = []
-      count.times {
-        inputs.push FETCH_MODEL_FILE
+      stl_url.each_with_index { |url, idx|
+        stl_fetch = FETCH_MODEL_FILE + ".#{idx}"
+        PrintMe::Download.new(url, stl_fetch).fetch
+        inputs.push stl_fetch
       }
 
       ## Normalize the download
+      stl_file = CURRENT_MODEL_FILE
       normalize = ['./vendor/stltwalker/stltwalker', '-p', '-o', stl_file, "--scale=#{scale}", *inputs]
       pid = Process.spawn(*normalize, :err => :out, :out => [LOG_FILE, "w"])
       _pid, status = Process.wait2 pid
