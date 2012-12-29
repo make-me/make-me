@@ -23,7 +23,9 @@ You can launch the web app by simply running
 
     script/server
 
-Then you can POST a URL to the server and it'll start printing.
+Then you can POST a URL to the server and it'll start printing. The default
+HTTP auth credentials are *hubot*:*isalive*. They can be controlled with the
+`MAKE_ME_USERNAME` and `MAKE_ME_PASSWORD` environment variables.
 
-    curl -v -d "url=http://f.cl.ly/items/111z2j09430c2v3Q2X1z/CuteOcto.stl" \
-      localhost:9393/print
+    curl -i http://hubot:isalive@localhost:9393/print               \
+         -d '{"url": "http://www.thingiverse.com/download:108313"}'
