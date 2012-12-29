@@ -13,6 +13,7 @@ The project comes with some STL files to use to test the basic operations
 of the toolchain
 
 	$ ls ./data
+    Mr_Jaws.stl
 
 You can also use external models from places like [Thingiverse](http://www.thingiverse.com)
 
