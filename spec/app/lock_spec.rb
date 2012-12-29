@@ -14,9 +14,7 @@ describe 'MakeMe::App Lock' do
       app.any_instance.stub(:locked? => true)
       auth
 
-      app.any_instance.should_receive(:lock_data).
-                       with(true).
-                       and_return('data')
+      app.any_instance.should_receive(:lock_data).and_return('data')
       get '/lock'
       expect(last_response.body).to eq('data')
     end
