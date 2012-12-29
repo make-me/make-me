@@ -113,7 +113,8 @@ the progress and the complete log of the print.
                    "scale": 1.0,                                          \
                    "quality": "low",                                      \
                    "density": 0.05,                                       \
-                   "config": "default"}'
+                   "config": "default"}'                                  \
+           http://hubot:isalive@localhost:9393/print
 
 The parameters in the JSON object are
 
