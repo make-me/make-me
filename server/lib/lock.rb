@@ -20,10 +20,10 @@ module PrintMe
     end
 
     ## I/O API
-    def update_lock(h={})
-      current = (read_lock || {}).merge h
+    def update_lock(data={})
+      current = (read_lock || {}).merge data
       File.open(@file, 'w') do |f|
-        Yajl::Encoder.encode(h, f)
+        Yajl::Encoder.encode(data, f)
       end
     end
 
