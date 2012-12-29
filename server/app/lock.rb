@@ -7,8 +7,8 @@ module PrintMe
 
     get '/lock' do
       require_basic_auth
-      if reason = locked?
-        halt 423, reason
+      if locked?
+        halt 423, lock_data(:json => true)
       else
         status 200
         "Unlocked"
@@ -31,6 +31,19 @@ module PrintMe
     helpers do
       def locked?
         LOCK.locked?
+      end
+
+      def lock_data(options={})
+        defaults = {:json => false}
+        options = defaults.merge options
+
+        data = LOCK.read_lock {}
+
+        if options[:json]
+          Yajl::Encoder.encode(data)
+        else
+          data
+        end
       end
 
       def lock!

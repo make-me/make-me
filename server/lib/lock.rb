@@ -6,16 +6,36 @@ module PrintMe
       @file = file
     end
 
+    ## High level API
     def locked?
-      File.exist?(@file) && File.read(@file)
+      lock_key(:status, :unknown).to_sym == :locked
     end
 
     def lock!
-      File.open(@file, 'w') { |f| f.write "Currently printing" }
+      update_lock :status => :locked
     end
 
     def unlock!
-      File.exist?(@file) && File.delete(@file)
+      update_lock :status => :unlocked
+    end
+
+    ## I/O API
+    def update_lock(h={})
+      current = (read_lock || {}).merge h
+      File.open(@file, 'w') do |f|
+        Yajl::Encoder.encode(h, f)
+      end
+    end
+
+    def read_lock(default=nil)
+      File.exist?(@file) && File.open(@file) do |f|
+        Yajl::Parser.new(:symbolize_keys => true).parse f
+      end || default
+    end
+
+private
+    def lock_key(key, default=nil)
+      read_lock({}).fetch(key.to_sym, default)
     end
   end
 end
