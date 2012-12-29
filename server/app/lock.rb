@@ -8,7 +8,7 @@ module MakeMe
     get '/lock' do
       require_basic_auth
       if locked?
-        halt 423, lock_data(true)
+        halt 423, lock_data
       else
         status 200
         "Unlocked"
@@ -33,7 +33,7 @@ module MakeMe
         LOCK.locked?
       end
 
-      def lock_data(parse_json = false)
+      def lock_data(parse_json = true)
         LOCK.read_lock(parse_json)
       end
 
