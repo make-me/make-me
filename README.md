@@ -90,7 +90,7 @@ HTTP auth credentials are *hubot* **:** *isalive*. They can be controlled with t
 `MAKE_ME_USERNAME` and `MAKE_ME_PASSWORD` environment variables.
 
     $ curl -i http://hubot:isalive@localhost:9393/print               \
-         -d '{"url": "http://www.thingiverse.com/download:108313"}'
+           -d '{"url": "http://www.thingiverse.com/download:108313"}'
 
 To manually unlock the printer with `curl` you can either issue a DELETE request
 or a POST request with `_method=DELETE` as a parameter
