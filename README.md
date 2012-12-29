@@ -106,7 +106,7 @@ or a POST request with `_method=DELETE` as a parameter
 The front page is a human-friendly view of the current print, the state of the lock,
 the progress and the complete log of the print.
 
-### 'POST /print' -- Print an object
+### `POST /print` -- Print an object
 
 	$ curl -i -d '{"url": ["http://www.thingiverse.com/download:108313"], \
                    "count": 1,                                            \
@@ -130,7 +130,7 @@ Returns `HTTP 409 CONFLICT` when the given STL models cannot be normalized or tr
 Returns `HTTP 423 LOCKED` when the print cannot be started because the printer is locked.
 
 
-### `GET /lock' -- Lock status
+### `GET /lock` -- Lock status
 
 	$ curl -i http://hubot:isalive@localhost:9393/lock
 
@@ -146,7 +146,7 @@ as JSON.
 When successfull will return `HTTP 302 FOUND` with a permanent location of a
 picture from the camera.
 
-### `DELETE /lock' -- Unlock the printer
+### `DELETE /lock` -- Unlock the printer
 
     # These are equivalent
     $ curl -i -X DELETE http://hubot:isalive@localhost:9393/lock
