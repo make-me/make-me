@@ -15,7 +15,7 @@ module PrintMe
       end
     end
 
-    post '/unlock' do
+    delete '/lock' do
       require_basic_auth
       # If process is still running, don't allow an unlock
       if locked? && !File.exist?(PID_FILE)

@@ -16,6 +16,7 @@ module PrintMe
 
     ## Config
     set :static, true
+    enable :method_override
 
     basic_auth do
       realm 'The 3rd Dimension'
