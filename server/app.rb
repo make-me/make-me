@@ -151,4 +151,4 @@ module PrintMe
   end
 end
 
-require_relative 'app/lock_file'
+require_relative 'app/lock'

@@ -1,11 +1,14 @@
+require_relative '../lib/lock'
+
 module PrintMe
   class App
     LOCK_FILE = File.join('tmp', 'printing.lock')
+    LOCK = PrintMe::Lock.new LOCK_FILE
 
     get '/lock' do
       require_basic_auth
-      if locked?
-        halt 423, locked?
+      if reason = locked?
+        halt 423, reason
       else
         status 200
         "Unlocked"
@@ -15,23 +18,23 @@ module PrintMe
     post '/unlock' do
       require_basic_auth
       # If process is still running, don't allow an unlock
-      if File.exist?(LOCK_FILE) && !File.exist?(PID_FILE)
-        File.delete(LOCK_FILE)
+      if locked? && !File.exist?(PID_FILE)
+        LOCK.unlock!
         status 200
         "Lock cleared!"
       else
         status 404
-        "No lock found"
+        "No lock found or still printing"
       end
     end
 
     helpers do
       def locked?
-        File.exist?(LOCK_FILE) && File.read(LOCK_FILE)
+        LOCK.locked?
       end
 
       def lock!
-        File.open(LOCK_FILE, 'w') { |f| f.write "Currently printing" }
+        LOCK.lock!
       end
     end
   end
