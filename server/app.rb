@@ -70,7 +70,7 @@ module MakeMe
     post '/print' do
       require_basic_auth
       if locked?
-        halt 423, lock_data(:json => true)
+        halt 423, lock_data
       else
         lock!
       end
