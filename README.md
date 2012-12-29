@@ -2,20 +2,57 @@
 
 ## Setup
 
-Clone this repo
+    $ git clone https://github.com/make-me/make-me.git
+	$ cd make-me
+	$ make init
 
-    https://github.com/make-me/make-me.git
+## CLI Interface
 
-Download a `*.stl` file and place it in `data` directory.
+The printer can be operated using command line tools within this repository.
+The project comes with some STL files to use to test the basic operations
+of the toolchain
+
+	$ ls ./data
+
+You can also use external models from places like [Thingiverse](http://www.thingiverse.com)
+
+    # Download Mr.Jaws from http://www.thingiverse.com/thing:14702
+    $ curl -F http://www.thingiverse.com/download:48479 > data/jaws.stl
 
 Plug the makerbot printer into the computer.
 
-To print a model, invoke `make` with the model name,
-including `data` but without the extension.
+To print a model, invoke `make` with the path to the model, leaving
+off the extension
 
-    $ make data/Mr_Jaws
+    $ make data/jaws
 
-If something breaks, panic, and remember this isn't even Alpha.
+Several print parameters can be adjusted from the enviornment
+
+### Slicer config
+
+    $ make GRUE_CONFIG=default path/to/model
+
+`GRUE_CONFIG=name` controls the slicer config to use. These are stored in `./config/` and two are included.
+
+* `default` - The default configuration, it's used if no config is specified
+* `support` - A slicer configuration that genrates support structures for the model.
+
+### Print quality
+
+    $ make QUALITY=low path/to/model
+
+`QUALITY=(low|medium|high)` controls the quality of the print by altering the line height
+of the resulting print. The options are
+
+* high   -- 0.1mm
+* medium -- 0.27mm
+* low    -- 0.34mm
+
+### Print density
+
+    $ make DENSITY=0.1 path/to/model
+
+`DENSITY=<percentage>` controls the infil percentage of the print. The default setting is `0.05`
 
 ## API
 
