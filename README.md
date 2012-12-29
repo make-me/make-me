@@ -89,5 +89,71 @@ Then you can POST a URL to the server and it'll start printing. The default
 HTTP auth credentials are *hubot* **:** *isalive*. They can be controlled with the
 `MAKE_ME_USERNAME` and `MAKE_ME_PASSWORD` environment variables.
 
-    curl -i http://hubot:isalive@localhost:9393/print               \
+    $ curl -i http://hubot:isalive@localhost:9393/print               \
          -d '{"url": "http://www.thingiverse.com/download:108313"}'
+
+To manually unlock the printer with `curl` you can either issue a DELETE request
+or a POST request with `_method=DELETE` as a parameter
+
+    # These are equivalent
+    $ curl -i -X DELETE http://hubot:isalive@localhost:9393/lock
+    $ curl -i -d '_method=DELETE' http://hubot:isalive@localhost:9393/lock
+
+### `GET /` -- HTML "Front page"
+
+    $ open http://localhost:9393/
+
+The front page is a human-friendly view of the current print, the state of the lock,
+the progress and the complete log of the print.
+
+### 'POST /print' -- Print an object
+
+	$ curl -i -d '{"url": ["http://www.thingiverse.com/download:108313"], \
+                   "count": 1,                                            \
+                   "scale": 1.0,                                          \
+                   "quality": "low",                                      \
+                   "density": 0.05,                                       \
+                   "config": "default"}'
+
+The parameters in the JSON object are
+
+* `url`     - Either a String or an Array of Strings that are URLs of **.stl** objects. **Required**
+* `count`   - The number of times to print all the given objects. Default: 1, **Optional**
+* `scale`   - The scaling factor of the print. Default 1.0, **Optional**
+* `density` - The infill densitity of the object. From 0.0 to 1.0. Default: 0.05. **Optional**
+* `config`  - The Miracle-Grue config to use during slicing Default: "default", **Optional**
+
+Returns `HTTP 200 OK` when the print appers to have begun successfully
+
+Returns `HTTP 409 CONFLICT` when the given STL models cannot be normalized or transformed
+
+Returns `HTTP 423 LOCKED` when the print cannot be started because the printer is locked.
+
+
+### `GET /lock' -- Lock status
+
+	$ curl -i http://hubot:isalive@localhost:9393/lock
+
+Returns `HTTP 200 OK` when there lock is clear.
+
+Returns `HTTP 423 Locked' when the printer is locked, returns the lock contents
+as JSON.
+
+### `GET /photo` -- Take a snapshot of the printer
+
+	$ open http://localhost:9393/photo
+
+When successfull will return `HTTP 302 FOUND` with a permanent location of a
+picture from the camera.
+
+### `DELETE /lock' -- Unlock the printer
+
+    # These are equivalent
+    $ curl -i -X DELETE http://hubot:isalive@localhost:9393/lock
+    $ curl -i -d '_method=DELETE' http://hubot:isalive@localhost:9393/lock
+
+Unlocks the printer. A printer can only be unlocked when no job is active.
+
+Returns `HTTP 200 OK` if the lock was succesfully cleared.
+
+Returns `HTTP 404 NOT FOUND` if the lock is free
