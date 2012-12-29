@@ -1,5 +1,10 @@
 ## A pipeline for getting things 3D printed.
 
+## Support
+
+At the moment, this only works on **OS X 10.8+** and ships with some binaries
+compiled for this platform. This is not ideal.
+
 ## Setup
 
     $ git clone https://github.com/make-me/make-me.git
