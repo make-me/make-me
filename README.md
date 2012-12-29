@@ -9,7 +9,7 @@ compiled for this platform. This is not ideal.
 
     $ git clone https://github.com/make-me/make-me.git
 	$ cd make-me
-	$ make init
+	$ script/bootstrap
 
 ## CLI Interface
 
