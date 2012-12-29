@@ -4,7 +4,7 @@
 
 Clone this repo
 
-    https://github.com/github/make_me.git
+    https://github.com/make-me/make-me.git
 
 Download a `*.stl` file and place it in `data` directory.
 
@@ -27,4 +27,3 @@ Then you can POST a URL to the server and it'll start printing.
 
     curl -v -d "url=http://f.cl.ly/items/111z2j09430c2v3Q2X1z/CuteOcto.stl" \
       localhost:9393/print
-
