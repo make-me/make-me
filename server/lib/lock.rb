@@ -47,7 +47,7 @@ module MakeMe
       if read_lock.nil?
         default
       else
-        read_lock.fetch(key.to_sym)
+        read_lock[key.to_sym]
       end
     end
   end
