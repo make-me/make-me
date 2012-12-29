@@ -27,15 +27,28 @@ module MakeMe
       end
     end
 
-    def read_lock(default=nil)
-      File.exist?(@file) && File.open(@file) do |f|
-        Yajl::Parser.new(:symbolize_keys => true).parse f
-      end || default
+    # Returns data from the lock file
+    # By default, it parses the JSON, but if passed `false`, it will return the
+    # raw data. An empty hash will be returned if the file is empty
+    def read_lock(parse_json = true)
+      if File.exists?(file)
+        File.open(file) do |f|
+          if parse_json
+            Yajl::Parser.new(:symbolize_keys => true).parse(f)
+          else
+            f.read
+          end
+        end
+      end
     end
 
-private
+    private
     def lock_key(key, default=nil)
-      read_lock({}).fetch(key.to_sym, default)
+      if read_lock.nil?
+        default
+      else
+        read_lock.fetch(key.to_sym)
+      end
     end
   end
 end

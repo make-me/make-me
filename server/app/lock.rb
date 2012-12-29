@@ -8,7 +8,7 @@ module MakeMe
     get '/lock' do
       require_basic_auth
       if locked?
-        halt 423, lock_data(:json => true)
+        halt 423, lock_data(true)
       else
         status 200
         "Unlocked"
@@ -33,17 +33,8 @@ module MakeMe
         LOCK.locked?
       end
 
-      def lock_data(options={})
-        defaults = {:json => false}
-        options = defaults.merge options
-
-        data = LOCK.read_lock {}
-
-        if options[:json]
-          Yajl::Encoder.encode(data)
-        else
-          data
-        end
+      def lock_data(parse_json = false)
+        LOCK.read_lock(parse_json)
       end
 
       def lock!

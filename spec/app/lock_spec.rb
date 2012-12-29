@@ -15,7 +15,7 @@ describe 'MakeMe::App Lock' do
       auth
 
       app.any_instance.should_receive(:lock_data).
-                       with(:json => true).
+                       with(true).
                        and_return('data')
       get '/lock'
       expect(last_response.body).to eq('data')
