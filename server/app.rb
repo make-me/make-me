@@ -69,7 +69,7 @@ module PrintMe
     post '/print' do
       require_basic_auth
       if locked?
-        halt 423, lock_data(:json => true) # halt_on_lock helper?
+        halt 423, lock_data(:json => true)
       else
         lock!
       end
