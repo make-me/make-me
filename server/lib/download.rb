@@ -1,4 +1,4 @@
-module PrintMe
+module MakeMe
   class Download
     attr_reader :url
     attr_accessor :output_file

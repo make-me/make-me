@@ -7,7 +7,7 @@ require 'active_support/core_ext'
 require 'json'
 require_relative 'lib/download'
 
-module PrintMe
+module MakeMe
   class App < Sinatra::Base
     PID_FILE  = File.join('tmp', 'make.pid')
     LOG_FILE  = File.join('tmp', 'make.log')

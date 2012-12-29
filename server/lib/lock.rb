@@ -1,4 +1,4 @@
-module PrintMe
+module MakeMe
   class Lock
     attr_reader :file
 

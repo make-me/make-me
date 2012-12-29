@@ -1,9 +1,9 @@
 require_relative '../lib/lock'
 
-module PrintMe
+module MakeMe
   class App
     LOCK_FILE = File.join('tmp', 'printing.lock')
-    LOCK = PrintMe::Lock.new LOCK_FILE
+    LOCK = MakeMe::Lock.new LOCK_FILE
 
     get '/lock' do
       require_basic_auth
