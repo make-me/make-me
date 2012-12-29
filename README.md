@@ -61,6 +61,23 @@ of object layers.
 
 `DENSITY=<percentage>` controls the infil percentage of the print. The default setting is `0.05`
 
+### Normalization and packing.
+
+The make-me distribution ships with a version of the [stltwalker](https://github.com/sshirokov/stltwalker) tool which
+is used by the web service described below to offer advanced functionality and to normalize input models but can also
+be used standalone as part of a manual print.
+
+Help for the version of `stltwalker` bundled with make-me can be obtained with
+
+    $ vendor/stltwalker/stltwalker -h
+
+The tool can be used to composite multiple objects or multiple copies of a single object
+into a single print, as is allowed by the [HTTP API](#http-api)
+
+    $ vendor/stltwalker/stltwalker -p data/object_a.stl data/object_b.stl data/object_b.stl -o data/out.stl
+	# [.. stltwalker output ..]
+    $ make QUALITY=low data/out
+
 ## HTTP API
 
 The service can also be controlled through an HTTP API.
