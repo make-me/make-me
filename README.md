@@ -25,20 +25,21 @@ You can also use external models from places like [Thingiverse](http://www.thing
     # Download Mr.Jaws from http://www.thingiverse.com/thing:14702
     $ curl -F http://www.thingiverse.com/download:48479 > data/jaws.stl
 
-Plug the makerbot printer into the computer.
+Plug the makerbot printer into the computer with the USB cable.
 
 To print a model, invoke `make` with the path to the model, leaving
 off the extension
 
     $ make data/jaws
 
-Several print parameters can be adjusted from the enviornment
+This is enough to get most things printed without much further tweaking, but
+several print parameters can be adjusted from the enviornment
 
 ### Slicer config
 
     $ make GRUE_CONFIG=default path/to/model
 
-`GRUE_CONFIG=name` controls the slicer config to use. These are stored in `./config/` and two are included.
+`GRUE_CONFIG=name` controls the slicer config to use. These are stored in `./config/` in the project root and two configs are included.
 
 * `default` - The default configuration, it's used if no config is specified
 * `support` - A slicer configuration that genrates support structures for the model.
@@ -48,7 +49,7 @@ Several print parameters can be adjusted from the enviornment
     $ make QUALITY=low path/to/model
 
 `QUALITY=(low|medium|high)` controls the quality of the print by altering the line height
-of the resulting print. The options are
+of object layers.
 
 * high   -- 0.1mm
 * medium -- 0.27mm
@@ -60,8 +61,9 @@ of the resulting print. The options are
 
 `DENSITY=<percentage>` controls the infil percentage of the print. The default setting is `0.05`
 
-## API
+## HTTP API
 
+The service can also be controlled through an HTTP API.
 You can launch the web app by simply running
 
     script/server
