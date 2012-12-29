@@ -16,7 +16,7 @@
 util = require 'util'
 qs = require 'querystring'
 
-makeServer = 'http://localhost'
+makeServer = 'http://localhost:9393'
 [authUser, authPass] = ['hubot', 'isalive']
 auth64 = (new Buffer("#{authUser}:#{authPass}")).toString("base64")
 
