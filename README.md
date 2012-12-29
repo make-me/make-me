@@ -24,7 +24,7 @@ You can launch the web app by simply running
     script/server
 
 Then you can POST a URL to the server and it'll start printing. The default
-HTTP auth credentials are *hubot*:*isalive*. They can be controlled with the
+HTTP auth credentials are *hubot* **:** *isalive*. They can be controlled with the
 `MAKE_ME_USERNAME` and `MAKE_ME_PASSWORD` environment variables.
 
     curl -i http://hubot:isalive@localhost:9393/print               \
