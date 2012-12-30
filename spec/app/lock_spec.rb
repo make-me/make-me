@@ -7,7 +7,7 @@ describe 'MakeMe::App Lock' do
       expect(last_response.status).to eq(401)
       auth
       get '/lock'
-      expect(last_response.status).to eq(200)
+      expect(last_response.status).to_not eq(401)
     end
 
     it 'responds with the lock data when locked' do
