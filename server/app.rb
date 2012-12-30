@@ -92,7 +92,7 @@ module MakeMe
       ## Fetch all of the inputs to temp files
       inputs = []
       stl_url.each_with_index do |url, index|
-        stl_path = FETCH_MODEL_FILE + ".#{index}"
+        stl_path = "#{FETCH_MODEL_FILE}.#{index}"
         MakeMe::Download.new(url, stl_path).fetch
         inputs.push stl_path
       end
