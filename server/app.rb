@@ -73,9 +73,8 @@ module MakeMe
         lock!
       end
 
-      # Either parse a JSON body or use params[]
-      # as usual, using the unified `args' hash
-      # from here out
+      # Either parse a JSON body or use params[] as usual, using the unified
+      # `args' hash from here out
       begin
         jparams = Yajl::Parser.new(:symbolize_keys => true).parse request.body.read
       rescue
