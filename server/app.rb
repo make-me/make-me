@@ -102,13 +102,15 @@ module MakeMe
 
       # Normalize the download
       stl_file = CURRENT_MODEL_FILE
-      normalize = ['./vendor/stltwalker/stltwalker', '-p', '-o', stl_file, "--scale=#{scale}", *inputs]
+      normalize = ['./vendor/stltwalker/stltwalker', '-p', '-o', stl_file,
+                   "--scale=#{scale}", *inputs]
       pid = Process.spawn(*normalize, :err => :out, :out => [LOG_FILE, "w"])
       _pid, status = Process.wait2 pid
       halt 409, "Model normalize failed."  unless status.exitstatus == 0
 
-      make_params = ["GRUE_CONFIG=#{grue_conf}", "QUALITY=#{slice_quality}", "DENSITY=#{density}"]
-      makefile = File.join(File.dirname(__FILE__), '..', 'Makefile')
+      make_params = ["GRUE_CONFIG=#{grue_conf}",
+                     "QUALITY=#{slice_quality}",
+                     "DENSITY=#{density}"]
       make_stl = [ "make", *make_params, "#{File.dirname(stl_file)}/#{File.basename(stl_file, '.stl')};",
                    "rm #{PID_FILE}"].join(" ")
 
