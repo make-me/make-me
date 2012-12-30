@@ -33,7 +33,7 @@ module MakeMe
         LOCK.locked?
       end
 
-      def lock_data(parse_json = true)
+      def lock_data(parse_json = false)
         LOCK.read_lock(parse_json)
       end
 
