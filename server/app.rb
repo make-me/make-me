@@ -3,8 +3,6 @@
 require 'bundler'
 Bundler.require
 require 'timeout'
-require 'active_support/core_ext'
-require 'json'
 require_relative 'lib/download'
 
 module MakeMe
@@ -79,7 +77,7 @@ module MakeMe
       # as usual, using the unified `args' hash
       # from here out
       begin
-        jparams = JSON.parse(request.body.read).symbolize_keys
+        jparams = Yajl::Parser.new(:symbolize_keys => true).parse request.body.read
       rescue
       end
       args = jparams || params
