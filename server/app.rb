@@ -108,6 +108,7 @@ module MakeMe
       _pid, status = Process.wait2 pid
       halt 409, "Model normalize failed."  unless status.exitstatus == 0
 
+      # Print the normalized STL
       make_params = [ "GRUE_CONFIG=#{grue_conf}",
                       "QUALITY=#{slice_quality}",
                       "DENSITY=#{density}"]
@@ -116,6 +117,8 @@ module MakeMe
                       "#{File.dirname(stl_file)}/#{File.basename(stl_file, '.stl')};",
                       "rm #{PID_FILE}"].join(" ")
 
+      # Kick off the print, if it runs for >5 seconds, it's unlikely it failed
+      # during slicing
       begin
         pid = Process.spawn(make_stl, :err => :out, :out => [LOG_FILE, "a"])
         File.open(PID_FILE, 'w') { |f| f.write pid }
