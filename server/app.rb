@@ -108,11 +108,13 @@ module MakeMe
       _pid, status = Process.wait2 pid
       halt 409, "Model normalize failed."  unless status.exitstatus == 0
 
-      make_params = ["GRUE_CONFIG=#{grue_conf}",
-                     "QUALITY=#{slice_quality}",
-                     "DENSITY=#{density}"]
-      make_stl = [ "make", *make_params, "#{File.dirname(stl_file)}/#{File.basename(stl_file, '.stl')};",
-                   "rm #{PID_FILE}"].join(" ")
+      make_params = [ "GRUE_CONFIG=#{grue_conf}",
+                      "QUALITY=#{slice_quality}",
+                      "DENSITY=#{density}"]
+
+      make_stl    = [ "make", *make_params,
+                      "#{File.dirname(stl_file)}/#{File.basename(stl_file, '.stl')};",
+                      "rm #{PID_FILE}"].join(" ")
 
       begin
         pid = Process.spawn(make_stl, :err => :out, :out => [LOG_FILE, "a"])
