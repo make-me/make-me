@@ -82,26 +82,24 @@ module MakeMe
       end
       args = jparams || params
 
-      stl_url  = [*args[:url]]
-      count    = (args[:count] || 1).to_i
-      scale    = (args[:scale] || 1.0).to_f
-      grue_conf = (args[:config] || 'default')
+      stl_url       = [*args[:url]]
+      count         = (args[:count]   || 1).to_i
+      scale         = (args[:scale]   || 1.0).to_f
+      grue_conf     = (args[:config]  || 'default')
       slice_quality = (args[:quality] || 'medium')
-      density = (args[:density] || 0.05).to_f
+      density       = (args[:density] || 0.05).to_f
 
-      ## Fetch all of the inputs
-      ## to temp files
+      ## Fetch all of the inputs to temp files
       inputs = []
-      stl_url.each_with_index { |url, idx|
-        stl_fetch = FETCH_MODEL_FILE + ".#{idx}"
-        PrintMe::Download.new(url, stl_fetch).fetch
-        inputs.push stl_fetch
-      }
+      stl_url.each_with_index do |url, index|
+        stl_path = FETCH_MODEL_FILE + ".#{index}"
+        MakeMe::Download.new(url, stl_path).fetch
+        inputs.push stl_path
+      end
 
+      # Duplicate the requested number of times
       input_set = inputs.dup
-      (1...count).each {
-        inputs.concat input_set
-      }
+      count.times { inputs.concat input_set }
 
       ## Normalize the download
       stl_file = CURRENT_MODEL_FILE
