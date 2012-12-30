@@ -48,8 +48,4 @@ describe 'MakeMe::App Lock' do
       end
     end
   end
-
-  def auth
-    authorize 'hubot', 'isalive'
-  end
 end
