@@ -82,7 +82,7 @@ module MakeMe
       end
       args = jparams || params
 
-      stl_url       = [*args[:url]]
+      stl_urls      = [*args[:url]]
       count         = (args[:count]   || 1).to_i
       scale         = (args[:scale]   || 1.0).to_f
       grue_conf     = (args[:config]  || 'default')
@@ -91,7 +91,7 @@ module MakeMe
 
       ## Fetch all of the inputs to temp files
       inputs = []
-      stl_url.each_with_index do |url, index|
+      stl_urls.each_with_index do |url, index|
         stl_path = "#{FETCH_MODEL_FILE}.#{index}"
         MakeMe::Download.new(url, stl_path).fetch
         inputs.push stl_path
