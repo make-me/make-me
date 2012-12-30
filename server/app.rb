@@ -89,7 +89,7 @@ module MakeMe
       slice_quality = (args[:quality] || 'medium')
       density       = (args[:density] || 0.05).to_f
 
-      ## Fetch all of the inputs to temp files
+      # Fetch all of the inputs to temp files
       inputs = []
       stl_urls.each_with_index do |url, index|
         stl_path = "#{FETCH_MODEL_FILE}.#{index}"
@@ -101,7 +101,7 @@ module MakeMe
       input_set = inputs.dup
       count.times { inputs.concat input_set }
 
-      ## Normalize the download
+      # Normalize the download
       stl_file = CURRENT_MODEL_FILE
       normalize = ['./vendor/stltwalker/stltwalker', '-p', '-o', stl_file, "--scale=#{scale}", *inputs]
       pid = Process.spawn(*normalize, :err => :out, :out => [LOG_FILE, "w"])
