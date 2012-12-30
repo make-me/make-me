@@ -138,7 +138,7 @@ Returns `HTTP 423 LOCKED` when the print cannot be started because the printer i
 
 Returns `HTTP 200 OK` when there lock is clear.
 
-Returns `HTTP 423 Locked' when the printer is locked, returns the lock contents
+Returns `HTTP 423 LOCKED` when the printer is locked, returns the lock contents
 as JSON.
 
 ### `GET /photo` -- Take a snapshot of the printer
