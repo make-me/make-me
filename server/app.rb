@@ -96,9 +96,8 @@ module MakeMe
         inputs.push stl_path
       end
 
-      # Duplicate the requested number of times
-      input_set = inputs.dup
-      count.times { inputs.concat input_set }
+      # Duplicate the requested number of times.
+      inputs = inputs * count
 
       # Normalize the download
       stl_file = CURRENT_MODEL_FILE
