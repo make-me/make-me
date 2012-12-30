@@ -8,8 +8,8 @@ compiled for this platform. This is not ideal.
 ## Setup
 
     $ git clone https://github.com/make-me/make-me.git
-	$ cd make-me
-	$ script/bootstrap
+    $ cd make-me
+    $ script/bootstrap
 
 ## CLI Interface
 
@@ -17,7 +17,7 @@ The printer can be operated using command line tools within this repository.
 The project comes with some STL files to use to test the basic operations
 of the toolchain
 
-	$ ls ./data
+    $ ls ./data
     Mr_Jaws.stl
 
 You can also use external models from places like [Thingiverse](http://www.thingiverse.com)
@@ -75,7 +75,7 @@ The tool can be used to composite multiple objects or multiple copies of a singl
 into a single print, as is allowed by the [HTTP API](#http-api)
 
     $ vendor/stltwalker/stltwalker -p data/object_a.stl data/object_b.stl data/object_b.stl -o data/out.stl
-	# [.. stltwalker output ..]
+    # [.. stltwalker output ..]
     $ make QUALITY=low data/out
 
 ## HTTP API
@@ -108,7 +108,7 @@ the progress and the complete log of the print.
 
 ### `POST /print` -- Print an object
 
-	$ curl -i -d '{"url": ["http://www.thingiverse.com/download:108313"], \
+    $ curl -i -d '{"url": ["http://www.thingiverse.com/download:108313"], \
                    "count": 1,                                            \
                    "scale": 1.0,                                          \
                    "quality": "low",                                      \
@@ -134,7 +134,7 @@ Returns `HTTP 423 LOCKED` when the print cannot be started because the printer i
 
 ### `GET /lock` -- Lock status
 
-	$ curl -i http://hubot:isalive@localhost:9393/lock
+    $ curl -i http://hubot:isalive@localhost:9393/lock
 
 Returns `HTTP 200 OK` when there lock is clear.
 
@@ -143,7 +143,7 @@ as JSON.
 
 ### `GET /photo` -- Take a snapshot of the printer
 
-	$ open http://localhost:9393/photo
+    $ open http://localhost:9393/photo
 
 When successfull will return `HTTP 302 FOUND` with a permanent location of a
 picture from the camera.
