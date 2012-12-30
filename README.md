@@ -1,4 +1,5 @@
-## A pipeline for getting things 3D printed.
+# MakeMe
+A pipeline for getting things 3D printed.
 
 ## Support
 
