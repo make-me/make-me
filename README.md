@@ -11,9 +11,14 @@ fixed in a future release. In the meantime, we're Mountain Lion only.
 
 ## Setup
 
+We've made it as easy as possible to get started with make-me. It's easy
+as...
+
     $ git clone https://github.com/make-me/make-me.git
     $ cd make-me
     $ script/bootstrap
+
+...and you're up and running with the make-me hello world.
 
 ## CLI Interface
 
