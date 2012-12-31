@@ -8,6 +8,7 @@ gem 'yajl-ruby', :require => "yajl"
 
 group :development do
   gem 'shotgun'
+  gem 'rake'
 end
 
 group :development, :test do
