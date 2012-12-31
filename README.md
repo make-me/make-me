@@ -130,10 +130,10 @@ lock, the progress and the complete log of the print.
 The parameters in the JSON object are
 
 * `url`     - Either a String or an Array of Strings that are URLs of **.stl** objects. **Required**
-* `quality` - The quality of the print, defined by line height. Can be "high", "medium" or "low". Default: "medium" **Optional**
+* `quality` - The quality of the print, defined by line height. Can be "high", "medium" or "low". Default: "medium", **Optional**
 * `count`   - The number of times to print all the given objects. Default: 1, **Optional**
 * `scale`   - The scaling factor of the print. Default 1.0, **Optional**
-* `density` - The infill densitity of the object. From 0.0 to 1.0. Default: 0.05. **Optional**
+* `density` - The infill densitity of the object. From 0.0 to 1.0. Default: 0.05, **Optional**
 * `config`  - The Miracle-Grue config to use during slicing Default: "default", **Optional**
 
 Returns `HTTP 200 OK` when the print appears to have begun successfully.
