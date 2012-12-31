@@ -101,7 +101,7 @@ You can fire up the web app by running:
 
     script/server
 
-Now you can POST a URL to the server and it'll start printing. :boom: The default HTTP
+Now you can POST a URL to the server and it'll start printing. The default HTTP
 auth credentials are *hubot* **:** *isalive*. They're  controlled with the
 `MAKE_ME_USERNAME` and `MAKE_ME_PASSWORD` environment variables.
 
