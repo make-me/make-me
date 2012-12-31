@@ -4,6 +4,7 @@ require 'bundler'
 Bundler.require
 require 'timeout'
 require_relative 'lib/download'
+require_relative 'lib/normalizer'
 
 module MakeMe
   class App < Sinatra::Base
@@ -73,8 +74,8 @@ module MakeMe
       args = Yajl::Parser.new(:symbolize_keys => true).parse request.body.read
 
       stl_urls      = [*args[:url]]
-      count         = (args[:count]   || 1).to_i
-      scale         = (args[:scale]   || 1.0).to_f
+      count         = args[:count]
+      scale         = args[:scale]
       grue_conf     = (args[:config]  || 'default')
       slice_quality = (args[:quality] || 'medium')
       density       = (args[:density] || 0.05).to_f
@@ -82,23 +83,11 @@ module MakeMe
       # Fetch all of the inputs to temp files
       inputs = MakeMe::Download.new(stl_urls, FETCH_MODEL_FILE).fetch
 
-      # Duplicate the requested number of times.
-      inputs = inputs * count
-
-      # Normalize the download
-      stl_file = CURRENT_MODEL_FILE
-      bounds = {
-        :L => (ENV['MAKE_ME_MAX_X'] || 285).to_f.to_s,
-        :W => (ENV['MAKE_ME_MAX_Y'] || 153).to_f.to_s,
-        :H => (ENV['MAKE_ME_MAX_Z'] || 155).to_f.to_s,
-      }
-      normalize = ['./vendor/stltwalker/stltwalker', '-p',
-                   '-L', bounds[:L], '-W', bounds[:W], '-H', bounds[:H],
-                   '-o', stl_file, "--scale=#{scale}", *inputs]
-      stl_file = CURRENT_MODEL_FILE
-      pid = Process.spawn(*normalize, :err => :out, :out => [LOG_FILE, "w"])
-      _pid, status = Process.wait2 pid
-      halt 409, "Model normalize failed."  unless status.exitstatus == 0
+      output = CURRENT_MODEL_FILE
+      normalizer = MakeMe::Normalizer.new(inputs, output, {:scale => scale, :count => count})
+      unless normalizer.normalize!
+        halt 409, "Normalizing model failed"
+      end
 
       # Print the normalized STL
       make_params = [ "GRUE_CONFIG=#{grue_conf}",
