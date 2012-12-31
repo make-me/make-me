@@ -168,7 +168,7 @@ as JSON.
     $ open http://localhost:9393/photo
 
 When successful will return `HTTP 302 FOUND` with a permanent location of a
-picture from the camera.
+picture from the camera. You're now a 3D printing paparazzo!
 
 ### `DELETE /lock` -- Unlock the printer
 
@@ -181,3 +181,13 @@ Unlocks the printer. A printer can only be unlocked when no job is active.
 Returns `HTTP 200 OK` if the lock was successfully cleared.
 
 Returns `HTTP 404 NOT FOUND` if the lock is free.
+
+## I love make-me! How can I contribute?
+
+What a coincidence -- we love make-me too. Contributing is easy.
+Fork this repo, hack away, and submit your 
+[pull request](https://help.github.com/articles/using-pull-requests). 
+
+Most importantly, go print things!! We hope make-me can remove any
+obstacles you make be facing in your 3D printing adventures. Living
+in the future shouldn't be annoying.
