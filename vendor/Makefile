@@ -6,9 +6,8 @@ all: | brews
 	$(MAKE) stltwalker
 
 ## stltwalker build
-stltwalker: stltwalker/stltwalker
-stltwalker/stltwalker:
-	make -C stltwalker
+stltwalker:
+	@make -C stltwalker
 
 ## Grue build
 grue: Miracle-Grue/bin/miracle_grue

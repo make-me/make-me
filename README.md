@@ -6,6 +6,8 @@ A pipeline for getting things 3D printed.
 At the moment, this only works on **OS X 10.8+** and ships with some binaries
 compiled for this platform. This is not ideal.
 
+[Homebrew](http://mxcl.github.com/homebrew/) is required for the bootstrap to run.
+
 ## Setup
 
     $ git clone https://github.com/make-me/make-me.git
@@ -93,6 +95,10 @@ You can launch the web app by simply running
 Then you can POST a URL to the server and it'll start printing. The default HTTP
 auth credentials are *hubot* **:** *isalive*. They can be controlled with the
 `MAKE_ME_USERNAME` and `MAKE_ME_PASSWORD` environment variables.
+
+The maximum deminsions of the print can be specified with the `$MAKE_ME_MAX_X`, `$MAKE_ME_MAX_Y` and
+`$MAKE_ME_MAX_Z` enviornment variables. The defaults are configured for the MakerBot Replicator 2.
+
 
     $ curl -i http://hubot:isalive@localhost:9393/print               \
            -d '{"url": "http://www.thingiverse.com/download:108313"}'
