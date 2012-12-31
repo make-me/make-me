@@ -28,7 +28,7 @@ module MakeMe
     # Runs stltwalker with the given arguments and blocks. Returns if the
     # normalization worked properly
     def normalize!
-      inputs = inputs * count
+      input_files = inputs * count
       args = ['-p', '-o', @output, "--scale=#{scale}"]
       if bounds
         args.concat([
@@ -38,7 +38,7 @@ module MakeMe
                     ])
       end
 
-      normalize = ['./vendor/stltwalker/stltwalker', *args, *inputs]
+      normalize = ['./vendor/stltwalker/stltwalker', *args, *input_files]
       begin
         pid = Process.spawn(*normalize, :err => :out, :out => [MakeMe::App::LOG_FILE, "w"])
         _pid, status = Process.wait2 pid
