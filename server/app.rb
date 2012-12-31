@@ -71,7 +71,7 @@ module MakeMe
         lock!
       end
 
-      args = Yajl::Parser.new(:symbolize_keys => true).parse request.body.read || {}
+      args = Yajl::Parser.new(:symbolize_keys => true).parse(request.body.read) || {}
 
       stl_urls      = [*args[:url]]
       count         = args[:count]
