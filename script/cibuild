@@ -1,0 +1,6 @@
+#!/bin/sh
+echo "==> Bootstrapping"
+script/bootstrap
+
+echo "==> Running tests"
+bin/rspec spec

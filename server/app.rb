@@ -4,8 +4,9 @@ require 'bundler'
 Bundler.require
 require 'timeout'
 require_relative 'lib/download'
+require_relative 'lib/normalizer'
 
-module PrintMe
+module MakeMe
   class App < Sinatra::Base
     PID_FILE  = File.join('tmp', 'make.pid')
     LOG_FILE  = File.join('tmp', 'make.log')
@@ -36,10 +37,7 @@ module PrintMe
     end
 
     get '/' do
-      begin
-        @current_log = File.read(LOG_FILE) if File.exists?(LOG_FILE)
-      rescue Errno::ENOENT
-      end
+      @current_log = File.read(LOG_FILE) if File.exists?(LOG_FILE)
       erb :index
     end
 
@@ -68,58 +66,40 @@ module PrintMe
     post '/print' do
       require_basic_auth
       if locked?
-        halt 423, lock_data(:json => true)
+        halt 423, lock_data
       else
         lock!
       end
 
-      # Either parse a JSON body or use params[]
-      # as usual, using the unified `args' hash
-      # from here out
-      begin
-        jparams = Yajl::Parser.new(:symbolize_keys => true).parse request.body.read
-      rescue
-      end
-      args = jparams || params
+      args = Yajl::Parser.new(:symbolize_keys => true).parse request.body.read
 
-      stl_url  = [*args[:url]]
-      count    = (args[:count] || 1).to_i
-      scale    = (args[:scale] || 1.0).to_f
-      grue_conf = (args[:config] || 'default')
+      stl_urls      = [*args[:url]]
+      count         = args[:count]
+      scale         = args[:scale]
+      grue_conf     = (args[:config]  || 'default')
       slice_quality = (args[:quality] || 'medium')
-      density = (args[:density] || 0.05).to_f
+      density       = (args[:density] || 0.05).to_f
 
-      ## Fetch all of the inputs
-      ## to temp files
-      inputs = []
-      stl_url.each_with_index { |url, idx|
-        stl_fetch = FETCH_MODEL_FILE + ".#{idx}"
-        PrintMe::Download.new(url, stl_fetch).fetch
-        inputs.push stl_fetch
-      }
+      # Fetch all of the inputs to temp files
+      inputs = MakeMe::Download.new(stl_urls, FETCH_MODEL_FILE).fetch
 
-      input_set = inputs.dup
-      (1...count).each {
-        inputs.concat input_set
-      }
+      output = CURRENT_MODEL_FILE
+      normalizer = MakeMe::Normalizer.new(inputs, output, {:scale => scale, :count => count})
+      unless normalizer.normalize!
+        halt 409, "Normalizing model failed"
+      end
 
-      ## Normalize the download
-      bounds = {
-        :L => (ENV['MAKE_ME_MAX_X'] || 285).to_f.to_s,
-        :W => (ENV['MAKE_ME_MAX_Y'] || 153).to_f.to_s,
-        :H => (ENV['MAKE_ME_MAX_Z'] || 155).to_f.to_s,
-      }
-      stl_file = CURRENT_MODEL_FILE
-      normalize = ['./vendor/stltwalker/stltwalker', '-p', '-L', bounds[:L], '-W', bounds[:W], '-H', bounds[:H], '-o', stl_file, "--scale=#{scale}", *inputs]
-      pid = Process.spawn(*normalize, :err => :out, :out => [LOG_FILE, "w"])
-      _pid, status = Process.wait2 pid
-      halt 409, "Model normalize failed."  unless status.exitstatus == 0
+      # Print the normalized STL
+      make_params = [ "GRUE_CONFIG=#{grue_conf}",
+                      "QUALITY=#{slice_quality}",
+                      "DENSITY=#{density}"]
 
-      make_params = ["GRUE_CONFIG=#{grue_conf}", "QUALITY=#{slice_quality}", "DENSITY=#{density}"]
-      makefile = File.join(File.dirname(__FILE__), '..', 'Makefile')
-      make_stl = [ "make", *make_params, "#{File.dirname(stl_file)}/#{File.basename(stl_file, '.stl')};",
-                   "rm #{PID_FILE}"].join(" ")
+      make_stl    = [ "make", *make_params,
+                      "#{File.dirname(output)}/#{File.basename(output, '.stl')};",
+                      "rm #{PID_FILE}"].join(" ")
 
+      # Kick off the print, if it runs for >5 seconds, it's unlikely it failed
+      # during slicing
       begin
         pid = Process.spawn(make_stl, :err => :out, :out => [LOG_FILE, "a"])
         File.open(PID_FILE, 'w') { |f| f.write pid }
@@ -131,20 +111,6 @@ module PrintMe
       rescue Timeout::Error
         status 200
         "Looks like it's printing correctly"
-      end
-    end
-
-    post '/kill' do
-      require_basic_auth
-      if File.exist?(PID_FILE)
-        pid = File.open(PID_FILE, 'r') { |f| f.read }.to_i
-        out = Process.kill("HUP", pid)
-        File.delete(PID_FILE)
-        status 200
-        "Killed job, exited with status #{out}"
-      else
-        status 404
-        "No process running"
       end
     end
 

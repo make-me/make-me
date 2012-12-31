@@ -1,2 +1,2 @@
 require './server/app'
-run PrintMe::App
+run MakeMe::App
