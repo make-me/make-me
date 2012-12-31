@@ -42,10 +42,15 @@ module MakeMe
       end
 
       normalize = ['./vendor/stltwalker/stltwalker', *args, *inputs]
-      pid = Process.spawn(*normalize, :err => :out, :out => [MakeMe::App::LOG_FILE, "w"])
-      _pid, status = Process.wait2 pid
+      begin
+        pid = Process.spawn(*normalize, :err => :out, :out => [MakeMe::App::LOG_FILE, "w"])
+        _pid, status = Process.wait2 pid
 
-      status.exitstatus == 0
+        status.exitstatus == 0
+      rescue Errno::ENOENT
+        # If we cannot find stltwalker, we fail
+        false
+      end
     end
   end
 end
