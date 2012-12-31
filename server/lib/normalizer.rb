@@ -32,7 +32,7 @@ module MakeMe
     # normalization worked properly
     def normalize!
       inputs = @inputs * count
-      args = ['-p', '-o', output, "--scale=#{scale}"]
+      args = ['-p', '-o', @output, "--scale=#{scale}"]
       if bounds
         args.concat([
                       '-L', bounds[:length],
