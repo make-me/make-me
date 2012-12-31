@@ -104,8 +104,9 @@ module PrintMe
       }
 
       ## Normalize the download
+      bounds = {:L => 285, :W => 153, :H => 155}
       stl_file = CURRENT_MODEL_FILE
-      normalize = ['./vendor/stltwalker/stltwalker', '-p', '-o', stl_file, "--scale=#{scale}", *inputs]
+      normalize = ['./vendor/stltwalker/stltwalker', '-p', '-L', bounds[:L].to_s, '-W', bounds[:W].to_s, '-H', bounds[:H].to_s, '-o', stl_file, "--scale=#{scale}", *inputs]
       pid = Process.spawn(*normalize, :err => :out, :out => [LOG_FILE, "w"])
       _pid, status = Process.wait2 pid
       halt 409, "Model normalize failed."  unless status.exitstatus == 0
