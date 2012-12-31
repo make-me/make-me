@@ -36,10 +36,7 @@ module MakeMe
     end
 
     get '/' do
-      begin
-        @current_log = File.read(LOG_FILE) if File.exists?(LOG_FILE)
-      rescue Errno::ENOENT
-      end
+      @current_log = File.read(LOG_FILE) if File.exists?(LOG_FILE)
       erb :index
     end
 
