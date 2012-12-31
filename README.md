@@ -18,13 +18,13 @@ compiled for this platform. This is not ideal.
 
 The printer can be operated using command line tools within this repository. The
 project comes with some STL files to use to test the basic operations of the
-toolchain
+toolchain:
 
     $ ls ./data
     Mr_Jaws.stl
 
 You can also use external models from places like
-[Thingiverse](http://www.thingiverse.com)
+[Thingiverse](http://www.thingiverse.com):
 
     # Download Mr.Jaws from http://www.thingiverse.com/thing:14702
     $ curl -F http://www.thingiverse.com/download:48479 > data/jaws.stl
@@ -32,12 +32,12 @@ You can also use external models from places like
 Plug the makerbot printer into the computer with the USB cable.
 
 To print a model, invoke `make` with the path to the model, leaving off the
-extension
+extension:
 
     $ make data/jaws
 
 This is enough to get most things printed without much further tweaking, but
-several print parameters can be adjusted from the environment
+several print parameters can be adjusted from the environment:
 
 ### Slicer config
 
@@ -74,12 +74,12 @@ The make-me distribution ships with a version of the
 web service described below to offer advanced functionality and to normalize
 input models but can also be used standalone as part of a manual print.
 
-Help for the version of `stltwalker` bundled with make-me can be obtained with
+Help for the version of `stltwalker` bundled with make-me can be obtained with:
 
     $ vendor/stltwalker/stltwalker -h
 
 The tool can be used to composite multiple objects or multiple copies of a
-single object into a single print, as is allowed by the [HTTP API](#http-api)
+single object into a single print, as is allowed by the [HTTP API](#http-api):
 
     $ vendor/stltwalker/stltwalker -p data/object_a.stl data/object_b.stl data/object_b.stl -o data/out.stl
     # [.. stltwalker output ..]
@@ -88,7 +88,7 @@ single object into a single print, as is allowed by the [HTTP API](#http-api)
 ## HTTP API
 
 The service can also be controlled through an HTTP API.
-You can launch the web app by simply running
+You can launch the web app by simply running:
 
     script/server
 
@@ -104,7 +104,7 @@ The maximum dimensions of the print can be specified with the `$MAKE_ME_MAX_X`, 
            -d '{"url": "http://www.thingiverse.com/download:108313"}'
 
 To manually unlock the printer with `curl` you can either issue a DELETE request
-or a POST request with `_method=DELETE` as a parameter
+or a POST request with `_method=DELETE` as a parameter:
 
     # These are equivalent
     $ curl -i -X DELETE http://hubot:isalive@localhost:9393/lock
