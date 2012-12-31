@@ -22,9 +22,9 @@ as...
 
 ## CLI Interface
 
-The printer can be operated using command line tools within this repository. The
-project comes with some STL files to use to test the basic operations of the
-toolchain:
+Your printer can now be operated using make-me's command line tools.
+Hooray! Make-me comes with some STL files so you can test the basic 
+operations of the toolchain:
 
     $ ls ./data
     Mr_Jaws.stl
@@ -35,15 +35,15 @@ You can also use external models from places like
     # Download Mr.Jaws from http://www.thingiverse.com/thing:14702
     $ curl -F http://www.thingiverse.com/download:48479 > data/jaws.stl
 
-Plug the makerbot printer into the computer with the USB cable.
+Plug the MakerBot printer into the computer with the USB cable.
 
 To print a model, invoke `make` with the path to the model, leaving off the
 extension:
 
     $ make data/jaws
 
-This is enough to get most things printed without much further tweaking, but
-several print parameters can be adjusted from the environment:
+This is enough to get most things printed without tweaking, but
+make-me can adjust print parameters for you:
 
 ### Slicer config
 
@@ -53,7 +53,8 @@ several print parameters can be adjusted from the environment:
 `./config/` in the project root and two configs are included.
 
 * `default` - The default configuration, it's used if no config is specified.
-* `support` - A slicer configuration that genrates support structures for the model.
+* `support` - A slicer configuration that genrates support structures
+for the model. This is particularly awesome for abstract shapes.
 
 ### Print quality
 
