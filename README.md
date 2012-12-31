@@ -96,7 +96,7 @@ single object into a single print:
 
 ## HTTP API
 
-Yes, we shipped make-me with an API. You deserve it :tm:.
+Yes, we shipped make-me with an API. You deserve it.
 You can fire up the web app by running:
 
     script/server
