@@ -76,17 +76,18 @@ setting is `0.05`
 
 ### Normalization and packing
 
-The make-me distribution ships with a version of the
-[stltwalker](https://github.com/sshirokov/stltwalker) tool which is used by the
-web service described below to offer advanced functionality and to normalize
-input models but can also be used standalone as part of a manual print.
+Make-me ships with
+[stltwalker](https://github.com/sshirokov/stltwalker), which is used to normalize
+input models and offer advanced functionality. But, stltwalker can also be used 
+standalone as part of a manual print.
 
-Help for the version of `stltwalker` bundled with make-me can be obtained with:
+Help for the version of `stltwalker` bundled with make-me can be found
+at:
 
     $ vendor/stltwalker/stltwalker -h
 
-The tool can be used to composite multiple objects or multiple copies of a
-single object into a single print, as is allowed by the [HTTP API](#http-api):
+Stltwalker can be used to composite multiple objects or multiple copies of a
+single object into a single print:
 
     $ vendor/stltwalker/stltwalker -p data/object_a.stl data/object_b.stl data/object_b.stl -o data/out.stl
     # [.. stltwalker output ..]
