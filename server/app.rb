@@ -104,7 +104,11 @@ module PrintMe
       }
 
       ## Normalize the download
-      bounds = {:L => 285, :W => 153, :H => 155}
+      bounds = {
+        :L => (ENV['MAKE_ME_MAX_X'] || 285).to_f,
+        :W => (ENV['MAKE_ME_MAX_Y'] || 153).to_f,
+        :H => (ENV['MAKE_ME_MAX_Z'] || 155).to_f,
+      }
       stl_file = CURRENT_MODEL_FILE
       normalize = ['./vendor/stltwalker/stltwalker', '-p', '-L', bounds[:L].to_s, '-W', bounds[:W].to_s, '-H', bounds[:H].to_s, '-o', stl_file, "--scale=#{scale}", *inputs]
       pid = Process.spawn(*normalize, :err => :out, :out => [LOG_FILE, "w"])
