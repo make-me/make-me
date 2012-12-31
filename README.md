@@ -95,8 +95,8 @@ single object into a single print:
 
 ## HTTP API
 
-The service can also be controlled through an HTTP API.
-You can launch the web app by simply running:
+Yes, we shipped make-me with an API. You deserve it :tm:.
+You can fire up the web app by running:
 
     script/server
 
