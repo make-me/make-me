@@ -1,4 +1,4 @@
-# MakeMe
+# MakeMe [![Build Status](https://travis-ci.org/make-me/make-me.png)](https://travis-ci.org/make-me/make-me)
 A pipeline for getting things 3D printed.
 
 ## Support
