@@ -80,11 +80,15 @@ module MakeMe
       slice_quality = (args[:quality] || 'medium')
       density       = (args[:density] || 0.05).to_f
 
+      normalizer_args = {}
+      normalizer_args[:count] = count if count
+      normalizer_args[:scale] = scale if scale
+
       # Fetch all of the inputs to temp files
       inputs = MakeMe::Download.new(stl_urls, FETCH_MODEL_FILE).fetch
 
       output = CURRENT_MODEL_FILE
-      normalizer = MakeMe::Normalizer.new(inputs, output, {:scale => scale, :count => count})
+      normalizer = MakeMe::Normalizer.new(inputs, output, normalizer_args)
       unless normalizer.normalize!
         halt 409, "Normalizing model failed"
       end
