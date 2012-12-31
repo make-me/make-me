@@ -1,5 +1,5 @@
 # MakeMe [![Build Status](https://travis-ci.org/make-me/make-me.png)](https://travis-ci.org/make-me/make-me)
-A pipeline for getting things 3D printed.
+A pipeline for taking your MakerBot to the next level of awesome. Embrace the meatspace!
 
 ## Support
 
