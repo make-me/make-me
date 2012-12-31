@@ -5,6 +5,8 @@
 At the moment, this only works on **OS X 10.8+** and ships with some binaries
 compiled for this platform. This is not ideal.
 
+[Homebrew](http://mxcl.github.com/homebrew/) is required for the bootstrap to run.
+
 ## Setup
 
     $ git clone https://github.com/make-me/make-me.git
