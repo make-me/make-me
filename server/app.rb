@@ -105,9 +105,9 @@ module PrintMe
 
       ## Normalize the download
       bounds = {
-        :L => (ENV['MAKE_ME_MAX_X'] || 285).to_s,
-        :W => (ENV['MAKE_ME_MAX_Y'] || 153).to_s,
-        :H => (ENV['MAKE_ME_MAX_Z'] || 155).to_s,
+        :L => (ENV['MAKE_ME_MAX_X'] || 285).to_f.to_s,
+        :W => (ENV['MAKE_ME_MAX_Y'] || 153).to_f.to_s,
+        :H => (ENV['MAKE_ME_MAX_Z'] || 155).to_f.to_s,
       }
       stl_file = CURRENT_MODEL_FILE
       normalize = ['./vendor/stltwalker/stltwalker', '-p', '-L', bounds[:L], '-W', bounds[:W], '-H', bounds[:H], '-o', stl_file, "--scale=#{scale}", *inputs]
