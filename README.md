@@ -4,7 +4,8 @@ A pipeline for taking your MakerBot to the next level of awesome. Embrace the me
 ## Support
 
 At the moment, this only works on **OS X 10.8+** and ships with some binaries
-compiled for this platform. This is not ideal.
+compiled for this platform. Yes, we know is not ideal and it will be
+fixed in a future release. In the meantime, we're Mountain Lion only.
 
 [Homebrew](http://mxcl.github.com/homebrew/) is required for the bootstrap to run.
 
