@@ -7,7 +7,8 @@ At the moment, this only works on **OS X 10.8+** and ships with some binaries
 compiled for this platform. Yes, we know is not ideal and it will be
 fixed in a future release. In the meantime, we're Mountain Lion only.
 
-[Homebrew](http://mxcl.github.com/homebrew/) is required for the bootstrap to run.
+[Homebrew](http://mxcl.github.com/homebrew/) is required for the
+bootstrap to run. If you don't have it, go get it. We'll still be here.
 
 ## Setup
 
