@@ -100,8 +100,8 @@ You can fire up the web app by running:
 
     script/server
 
-Then you can POST a URL to the server and it'll start printing. The default HTTP
-auth credentials are *hubot* **:** *isalive*. They can be controlled with the
+Now you can POST a URL to the server and it'll start printing. :boom: The default HTTP
+auth credentials are *hubot* **:** *isalive*. They're  controlled with the
 `MAKE_ME_USERNAME` and `MAKE_ME_PASSWORD` environment variables.
 
 The maximum dimensions of the print can be specified with the `$MAKE_ME_MAX_X`, `$MAKE_ME_MAX_Y` and
@@ -123,7 +123,8 @@ or a POST request with `_method=DELETE` as a parameter:
     $ open http://localhost:9393/
 
 The front page is a human-friendly view of the current print, the state of the
-lock, the progress and the complete log of the print.
+lock, the progress and the complete log of the print. It's awesome, and
+you might enjoy it.
 
 ### `POST /print` -- Print an object
 
