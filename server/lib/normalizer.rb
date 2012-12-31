@@ -1,37 +1,34 @@
 module MakeMe
   class Normalizer
     def initialize(inputs, output, args)
-      bounds        = {
-                        :length => (ENV['MAKE_ME_MAX_X'] || 285).to_f.to_s,
-                        :width  => (ENV['MAKE_ME_MAX_Y'] || 153).to_f.to_s,
-                        :height => (ENV['MAKE_ME_MAX_Z'] || 155).to_f.to_s,
-                      }
-      default_args  = {
-                        :scale => 1.0,
-                        :count => 1,
-                        :bounds => bounds
-                      }
 
-      @args = default_args.merge(args)
-      @inputs, @output = inputs, output
+      @inputs, @output, @args = inputs, output, args
     end
 
     def count
-      @args[:count]
+      @args[:count] || 1
     end
 
     def scale
-      @args[:scale]
+      @args[:scale] || 1.0
     end
 
     def bounds
-      @args[:bounds]
+      @args[:bounds] || {
+                          :length => (ENV['MAKE_ME_MAX_X'] || 285).to_f.to_s,
+                          :width  => (ENV['MAKE_ME_MAX_Y'] || 153).to_f.to_s,
+                          :height => (ENV['MAKE_ME_MAX_Z'] || 155).to_f.to_s,
+                        }
+    end
+
+    def inputs
+      @inputs || []
     end
 
     # Runs stltwalker with the given arguments and blocks. Returns if the
     # normalization worked properly
     def normalize!
-      inputs = @inputs * count
+      inputs = inputs * count
       args = ['-p', '-o', @output, "--scale=#{scale}"]
       if bounds
         args.concat([
