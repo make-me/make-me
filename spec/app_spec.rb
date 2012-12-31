@@ -23,7 +23,9 @@ describe MakeMe::App do
                   'https://tinkercad.com/things/9Ji3HC0Ukqq/polysoup.stl'
                ]
         path = MakeMe::App::FETCH_MODEL_FILE
-        MakeMe::Download.should_receive(:new).with(urls, path)
+        download = mock('download')
+        download.should_receive(:fetch)
+        MakeMe::Download.should_receive(:new).with(urls, path).and_return(download)
 
         post '/print', Yajl::Encoder.encode({:url => urls})
       end
