@@ -183,6 +183,17 @@ Returns `HTTP 200 OK` if the lock was successfully cleared.
 
 Returns `HTTP 404 NOT FOUND` if the lock is free.
 
+## Hubot Compatability
+
+[Hubot](http://hubot.github.com/) can now make things for you. If you
+implement our
+[hubot-script](https://github.com/github/hubot-scripts/pull/673/files) 
+into your own hubot installation, you'll be able to mamage your 3D
+printer through Campfire. Our hubot-script comes preconfigured for
+localhost:9292, but this can be altered for your own network
+preferences. This may seem like the origins of Skynet, but we assure you
+that it's not.
+
 ## I love make-me! How can I contribute?
 
 What a coincidence -- we love make-me too. Contributing is easy.
