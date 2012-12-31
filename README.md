@@ -189,6 +189,6 @@ What a coincidence -- we love make-me too. Contributing is easy.
 Fork this repo, hack away, and submit your 
 [pull request](https://help.github.com/articles/using-pull-requests). 
 
-Most importantly, go print things!! We hope make-me can remove any
+Most importantly, go print things! We hope make-me can remove any
 obstacles you make be facing in your 3D printing adventures. Living
 in the future shouldn't be annoying.
