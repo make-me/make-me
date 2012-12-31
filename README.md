@@ -91,7 +91,7 @@ Then you can POST a URL to the server and it'll start printing. The default
 HTTP auth credentials are *hubot* **:** *isalive*. They can be controlled with the
 `MAKE_ME_USERNAME` and `MAKE_ME_PASSWORD` environment variables.
 
-The maximum deminsions of the print can be specified with the `$MAKE_ME_MAX_X`, `$MAKE_ME_MAX_Y` and
+The maximum dimensions of the print can be specified with the `$MAKE_ME_MAX_X`, `$MAKE_ME_MAX_Y` and
 `$MAKE_ME_MAX_Z` enviornment variables. The defaults are configured for the MakerBot Replicator 2.
 
 
