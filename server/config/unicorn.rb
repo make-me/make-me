@@ -1,3 +1,3 @@
 worker_processes 3
-timeout 30
+timeout 90
 listen 9292
