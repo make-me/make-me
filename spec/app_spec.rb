@@ -22,12 +22,8 @@ describe MakeMe::App do
                   'https://tinkercad.com/things/dP2KXaBxbNw/polysoup.stl',
                   'https://tinkercad.com/things/9Ji3HC0Ukqq/polysoup.stl'
                ]
-        urls.each_with_index do |url, index|
-          download = mock('download')
-          path = "#{MakeMe::App::FETCH_MODEL_FILE}.#{index}"
-          download.should_receive(:fetch)
-          MakeMe::Download.should_receive(:new).with(url, path).and_return(download)
-        end
+        path = MakeMe::App::FETCH_MODEL_FILE
+        MakeMe::Download.should_receive(:new).with(urls, path)
 
         post '/print', Yajl::Encoder.encode({:url => urls})
       end

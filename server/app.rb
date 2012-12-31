@@ -83,12 +83,7 @@ module MakeMe
       density       = (args[:density] || 0.05).to_f
 
       # Fetch all of the inputs to temp files
-      inputs = []
-      stl_urls.each_with_index do |url, index|
-        stl_path = "#{FETCH_MODEL_FILE}.#{index}"
-        MakeMe::Download.new(url, stl_path).fetch
-        inputs.push stl_path
-      end
+      inputs = MakeMe::Download.new(stl_urls, FETCH_MODEL_FILE).fetch
 
       # Duplicate the requested number of times.
       inputs = inputs * count
