@@ -46,7 +46,7 @@ several print parameters can be adjusted from the environment
 `GRUE_CONFIG=name` controls the slicer config to use. These are stored in
 `./config/` in the project root and two configs are included.
 
-* `default` - The default configuration, it's used if no config is specified
+* `default` - The default configuration, it's used if no config is specified.
 * `support` - A slicer configuration that genrates support structures for the model.
 
 ### Print quality
@@ -136,10 +136,10 @@ The parameters in the JSON object are
 * `density` - The infill densitity of the object. From 0.0 to 1.0. Default: 0.05. **Optional**
 * `config`  - The Miracle-Grue config to use during slicing Default: "default", **Optional**
 
-Returns `HTTP 200 OK` when the print appears to have begun successfully
+Returns `HTTP 200 OK` when the print appears to have begun successfully.
 
 Returns `HTTP 409 CONFLICT` when the given STL models cannot be normalized or
-transformed
+transformed.
 
 Returns `HTTP 423 LOCKED` when the print cannot be started because the printer
 is locked.
@@ -171,4 +171,4 @@ Unlocks the printer. A printer can only be unlocked when no job is active.
 
 Returns `HTTP 200 OK` if the lock was successfully cleared.
 
-Returns `HTTP 404 NOT FOUND` if the lock is free
+Returns `HTTP 404 NOT FOUND` if the lock is free.
