@@ -95,7 +95,7 @@ module MakeMe
                       "DENSITY=#{density}"]
 
       make_stl    = [ "make", *make_params,
-                      "#{File.dirname(stl_file)}/#{File.basename(stl_file, '.stl')};",
+                      "#{File.dirname(output)}/#{File.basename(output, '.stl')};",
                       "rm #{PID_FILE}"].join(" ")
 
       # Kick off the print, if it runs for >5 seconds, it's unlikely it failed
