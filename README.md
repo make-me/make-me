@@ -191,10 +191,9 @@ comes preconfigured for localhost:9292, but this can be altered for your
 own network preferences. This may seem like the origins of Skynet, but 
 we assure you that it's not.
 
-## I love make-me! How can I contribute?
+## How can I contribute?
 
-What a coincidence -- we love make-me too. Contributing is easy.
-Fork this repo, hack away, and submit your 
+Contributing is easy. Fork this repo, hack away, and submit your 
 [pull request](https://help.github.com/articles/using-pull-requests). 
 
 Most importantly, go print things! We hope make-me can remove any
