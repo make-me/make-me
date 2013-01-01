@@ -19,8 +19,6 @@ as...
     $ cd make-me
     $ script/bootstrap
 
-...and you're up and running with the make-me hello world.
-
 ## CLI Interface
 
 Your printer can now be operated using make-me's command line tools.
