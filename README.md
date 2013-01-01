@@ -1,5 +1,6 @@
 # MakeMe [![Build Status](https://travis-ci.org/make-me/make-me.png)](https://travis-ci.org/make-me/make-me)
-A pipeline for taking your MakerBot to the next level of awesome. Embrace the meatspace!
+A pipeline for taking your [MakerBot Replicator 2](https://store.makerbot.com/replicator2.html) 
+to the next level of awesome. Embrace the meatspace!
 
 ## Support
 
