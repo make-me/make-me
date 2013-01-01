@@ -101,7 +101,7 @@ The maximum dimensions of the print can be specified with the `$MAKE_ME_MAX_X`, 
 
 
     $ curl -i http://hubot:isalive@localhost:9393/print               \
-           -d '{"url": "http://www.thingiverse.com/download:108313"}'
+           -d '{"url": "http://www.thingiverse.com/download:48876"}'
 
 To manually unlock the printer with `curl` you can either issue a DELETE request
 or a POST request with `_method=DELETE` as a parameter:
@@ -119,7 +119,7 @@ lock, the progress and the complete log of the print.
 
 ### `POST /print` -- Print an object
 
-    $ curl -i -d '{"url": ["http://www.thingiverse.com/download:108313"], \
+    $ curl -i -d '{"url": ["http://www.thingiverse.com/download:48876"],  \
                    "count": 1,                                            \
                    "scale": 1.0,                                          \
                    "quality": "low",                                      \
