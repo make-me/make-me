@@ -53,7 +53,7 @@ make-me can adjust print parameters for you:
 `./config/` in the project root and two configs are included.
 
 * `default` - The default configuration, it's used if no config is specified.
-* `support` - A slicer configuration that genrates support structures
+* `support` - A slicer configuration that generates support structures
 for the model. This is particularly awesome for abstract shapes.
 
 ### Print quality
@@ -71,7 +71,7 @@ line height of object layers.
 
     $ make DENSITY=0.1 path/to/model
 
-`DENSITY=<percentage>` controls the infil percentage of the print. The default
+`DENSITY=<percentage>` controls the infill percentage of the print. The default
 setting is `0.05`
 
 ### Normalization and packing
@@ -105,7 +105,7 @@ auth credentials are *hubot* **:** *isalive*. They're  controlled with the
 `MAKE_ME_USERNAME` and `MAKE_ME_PASSWORD` environment variables.
 
 The maximum dimensions of the print can be specified with the `$MAKE_ME_MAX_X`, `$MAKE_ME_MAX_Y` and
-`$MAKE_ME_MAX_Z` enviornment variables. The defaults are configured for the MakerBot Replicator 2.
+`$MAKE_ME_MAX_Z` environment variables. The defaults are configured for the MakerBot Replicator 2.
 
 
     $ curl -i http://hubot:isalive@localhost:9393/print               \
@@ -142,7 +142,7 @@ The parameters in the JSON object are
 * `quality` - The quality of the print, defined by line height. Can be "high", "medium" or "low". Default: "medium", **Optional**
 * `count`   - The number of times to print all the given objects. Default: 1, **Optional**
 * `scale`   - The scaling factor of the print. Default 1.0, **Optional**
-* `density` - The infill densitity of the object. From 0.0 to 1.0. Default: 0.05, **Optional**
+* `density` - The infill density of the object. From 0.0 to 1.0. Default: 0.05, **Optional**
 * `config`  - The Miracle-Grue config to use during slicing Default: "default", **Optional**
 
 Returns `HTTP 200 OK` when the print appears to have begun successfully.
@@ -158,7 +158,7 @@ is locked.
 
     $ curl -i http://hubot:isalive@localhost:9393/lock
 
-Returns `HTTP 200 OK` when there lock is clear.
+Returns `HTTP 200 OK` when the lock is clear.
 
 Returns `HTTP 423 LOCKED` when the printer is locked, returns the lock contents
 as JSON.
@@ -182,12 +182,12 @@ Returns `HTTP 200 OK` if the lock was successfully cleared.
 
 Returns `HTTP 404 NOT FOUND` if the lock is free.
 
-## Hubot Compatability
+## Hubot Compatibility
 
 [Hubot](http://hubot.github.com/) can now make things for you. If you
 include our
-[hubot-script](https://github.com/github/hubot-scripts/blob/master/src/scripts/make_me.coffee)
-, you'll be able to mamage your 3D printer through Campfire. Our script 
+[hubot-script](https://github.com/github/hubot-scripts/blob/master/src/scripts/make_me.coffee), 
+you'll be able to your 3D printer through Campfire. Our script 
 comes preconfigured for localhost:9292, but this can be altered for your 
 own network preferences. This may seem like the origins of Skynet, but 
 we assure you that it's not.
@@ -198,5 +198,5 @@ Contributing is easy. Fork this repo, hack away, and submit your
 [pull request](https://help.github.com/articles/using-pull-requests). 
 
 Most importantly, go print things! We hope make-me can remove any
-obstacles you make be facing in your 3D printing adventures. Living
+obstacles you may be facing in your 3D printing adventures. Living
 in the future shouldn't be annoying.
