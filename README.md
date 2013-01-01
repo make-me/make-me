@@ -187,7 +187,7 @@ Returns `HTTP 404 NOT FOUND` if the lock is free.
 [Hubot](http://hubot.github.com/) can now make things for you. If you
 include our
 [hubot-script](https://github.com/github/hubot-scripts/blob/master/src/scripts/make_me.coffee), 
-you'll be able to your 3D printer through Campfire. Our script 
+you'll be able to use your 3D printer through Campfire. Our script 
 comes preconfigured for localhost:9292, but this can be altered for your 
 own network preferences. This may seem like the origins of Skynet, but 
 we assure you that it's not.
