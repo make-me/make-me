@@ -33,7 +33,7 @@ You can also use external models from places like
 [Thingiverse](http://www.thingiverse.com):
 
     # Download Mr.Jaws from http://www.thingiverse.com/thing:14702
-    $ curl -F http://www.thingiverse.com/download:48479 > data/jaws.stl
+    $ curl -L http://www.thingiverse.com/download:48479 > data/jaws.stl
 
 Plug the MakerBot printer into the computer with the USB cable.
 
