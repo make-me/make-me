@@ -41,6 +41,10 @@ module MakeMe
       erb :index
     end
 
+    get '/about' do
+      erb :about
+    end
+
     get '/current_model' do
       if File.exist?(CURRENT_MODEL_FILE)
         content_type "application/sla"

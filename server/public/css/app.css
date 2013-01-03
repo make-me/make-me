@@ -4,3 +4,25 @@ pre {
   white-space: pre;
   word-wrap: normal;
 }
+
+.page-header h1 > a {
+  color: #555555;
+  text-decoration: none;
+}
+
+#footer {
+  text-align: center;
+  margin-top: 48px;
+  margin-bottom: 24px;
+}
+
+ul.footer-links {
+  display: block;
+  list-style-type: none;
+}
+
+ul.footer-links li {
+  display: inline;
+  padding-left: 12px;
+  padding-right: 12px;
+}
