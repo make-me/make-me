@@ -195,7 +195,8 @@ we assure you that it's not.
 ## How can I contribute?
 
 Contributing is easy. Fork this repo, hack away, and submit your 
-[pull request](https://help.github.com/articles/using-pull-requests). 
+[pull request](https://help.github.com/articles/using-pull-requests).
+Make Me is currently maintained by @skalnik and @sshirokov.
 
 Most importantly, go print things! We hope make-me can remove any
 obstacles you may be facing in your 3D printing adventures. Living
