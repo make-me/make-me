@@ -5,6 +5,7 @@ Bundler.require
 require 'timeout'
 require_relative 'lib/download'
 require_relative 'lib/normalizer'
+require_relative 'lib/miracle_grue_configurator'
 
 module MakeMe
   class App < Sinatra::Base
@@ -12,6 +13,7 @@ module MakeMe
     LOG_FILE  = File.join('tmp', 'make.log')
     FETCH_MODEL_FILE = File.join('data', 'fetch.stl')
     CURRENT_MODEL_FILE = File.join('data', 'print.stl')
+    GRUE_CONFIG = File.join('config', 'grue-make-me.config')
 
     ## Config
     set :static, true
@@ -80,6 +82,8 @@ module MakeMe
       stl_urls      = [*args[:url]]
       count         = args[:count]
       scale         = args[:scale]
+      supports      = args[:supports]
+      raft          = args[:raft]
       grue_conf     = (args[:config]  || 'default')
       slice_quality = (args[:quality] || 'medium')
       density       = (args[:density] || 0.05).to_f
@@ -87,6 +91,25 @@ module MakeMe
       normalizer_args = {}
       normalizer_args[:count] = count if count
       normalizer_args[:scale] = scale if scale
+
+      lineHeight =  case slice_quality
+                    when 'low'
+                      0.34
+                    when 'high'
+                      0.1
+                    else
+                      0.27
+                    end
+
+      slicerArgs =  {
+                      :infillDensity => density,
+                      :lineHeight    => lineHeight,
+                      :doSupport     => supports,
+                      :doRaft        => raft
+                    }
+
+      configurator = MakeMe::MiracleGrueConfigurator.new(slicerArgs)
+      configurator.save(GRUE_CONFIG)
 
       # Fetch all of the inputs to temp files
       inputs = MakeMe::Download.new(stl_urls, FETCH_MODEL_FILE).fetch
