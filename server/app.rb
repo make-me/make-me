@@ -121,11 +121,7 @@ module MakeMe
       end
 
       # Print the normalized STL
-      make_params = [ "GRUE_CONFIG=#{grue_conf}",
-                      "QUALITY=#{slice_quality}",
-                      "DENSITY=#{density}"]
-
-      make_stl    = [ "make", *make_params,
+      make_stl    = [ "make", "GRUE_CONFIG=#{GRUE_CONFIG}",
                       "#{File.dirname(output)}/#{File.basename(output, '.stl')};",
                       "rm #{PID_FILE}"].join(" ")
 
