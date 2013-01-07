@@ -124,8 +124,8 @@ module MakeMe
                       "#{File.dirname(output)}/#{File.basename(output, '.stl')};",
                       "rm #{PID_FILE}"].join(" ")
 
-      # Kick off the print, if it runs for >5 seconds, it's unlikely it failed
-      # during slicing
+      # Slicing usually is usually under 5 seconds, so if the process runs
+      # longer, it's probably printing correctly
       begin
         pid = Process.spawn(make_stl, :err => :out, :out => [LOG_FILE, "a"])
         File.open(PID_FILE, 'w') { |f| f.write pid }
