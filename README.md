@@ -50,7 +50,7 @@ make-me can adjust print parameters for you:
     $ make GRUE_CONFIG=default path/to/model
 
 `GRUE_CONFIG=name` controls the slicer config to use. These are stored in
-`./config/` in the project root and two configs are included.
+`./config/` in the project root and three configs are included.
 
 * `default` - The default configuration, it's used if no config is specified.
 * `support` - A slicer configuration that generates support structures
