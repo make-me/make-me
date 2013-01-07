@@ -58,7 +58,7 @@ for the model. This is particularly awesome for abstract shapes.
 * `raft`    - A configuration that prints the model on a "raft" or
 supporting surface for the model to rest on.
 
-You can copy any of those configs and modify the settings within then to tune
+You can copy any of those configs and modify the settings within them to tune
 your command line prints.
 
 Some settings of interest are:
