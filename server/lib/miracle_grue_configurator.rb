@@ -8,7 +8,7 @@ module MakeMe
 
     def save(filename)
       File.open(filename, 'w') do |file|
-        file.write Yajl::Encoder.encode(config)
+        file.write Yajl::Encoder.encode(config, :pretty => true)
       end
     end
 
