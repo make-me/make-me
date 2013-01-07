@@ -82,11 +82,10 @@ module MakeMe
       stl_urls      = [*args[:url]]
       count         = args[:count]
       scale         = args[:scale]
-      supports      = args[:supports]
-      raft          = args[:raft]
-      grue_conf     = (args[:config]  || 'default')
-      slice_quality = (args[:quality] || 'medium')
-      density       = (args[:density] || 0.05).to_f
+      supports      = (args[:supports] || false)
+      raft          = (args[:raft]     || false)
+      slice_quality = (args[:quality]  || 'medium')
+      density       = (args[:density]  || 0.05).to_f
 
       normalizer_args = {}
       normalizer_args[:count] = count if count
