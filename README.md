@@ -159,6 +159,9 @@ as JSON.
 When successful will return `HTTP 302 FOUND` with a permanent location of a
 picture from the camera. You're now a 3D printing paparazzo!
 
+A different camera can be selected by passing the `?camera=N` parameter
+with an integer argument. The count starts, and defaults to 0.
+
 ### `DELETE /lock` -- Unlock the printer
 
     # These are equivalent
