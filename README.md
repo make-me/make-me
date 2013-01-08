@@ -1,5 +1,5 @@
 # MakeMe [![Build Status](https://travis-ci.org/make-me/make-me.png)](https://travis-ci.org/make-me/make-me)
-A pipeline for taking your [MakerBot Replicator 2](https://store.makerbot.com/replicator2.html) 
+A pipeline for taking your [MakerBot Replicator 2](https://store.makerbot.com/replicator2.html)
 to the next level of awesome. Embrace the meatspace!
 
 ## Support
@@ -7,7 +7,7 @@ to the next level of awesome. Embrace the meatspace!
 At the moment, this only works on **OS X 10.8+** and ships with a binary
 compiled for this platform. However, the binary relates to make-me's
 photo function, so some customization should enable other systems.
- 
+
 [Homebrew](http://mxcl.github.com/homebrew/) is required for the
 bootstrap to run. If you don't have it, go get it. We'll still be here.
 
@@ -23,7 +23,7 @@ as...
 ## CLI Interface
 
 Your printer can now be operated using make-me's command line tools.
-Hooray! Make-me comes with some STL files so you can test the basic 
+Hooray! Make-me comes with some STL files so you can test the basic
 operations of the toolchain:
 
     $ ls ./data
@@ -78,7 +78,7 @@ setting is `0.05`
 
 Make-me ships with
 [stltwalker](https://github.com/sshirokov/stltwalker), which is used to normalize
-input models and offer advanced functionality. But, stltwalker can also be used 
+input models and offer advanced functionality. But, stltwalker can also be used
 standalone as part of a manual print.
 
 Help for the version of `stltwalker` bundled with make-me can be found
@@ -170,6 +170,9 @@ as JSON.
 When successful will return `HTTP 302 FOUND` with a permanent location of a
 picture from the camera. You're now a 3D printing paparazzo!
 
+A different camera can be selected by passing the `?camera=N` parameter
+with an integer argument. The count starts, and defaults to 0.
+
 ### `DELETE /lock` -- Unlock the printer
 
     # These are equivalent
@@ -186,17 +189,17 @@ Returns `HTTP 404 NOT FOUND` if the lock is free.
 
 [Hubot](http://hubot.github.com/) can now make things for you. If you
 include our
-[hubot-script](https://github.com/github/hubot-scripts/blob/master/src/scripts/make_me.coffee), 
-you'll be able to use your 3D printer through Campfire. Our script 
-comes preconfigured for localhost:9292, but this can be altered for your 
-own network preferences. This may seem like the origins of Skynet, but 
+[hubot-script](https://github.com/github/hubot-scripts/blob/master/src/scripts/make_me.coffee),
+you'll be able to use your 3D printer through Campfire. Our script
+comes preconfigured for localhost:9292, but this can be altered for your
+own network preferences. This may seem like the origins of Skynet, but
 we assure you that it's not.
 
 ## How can I contribute?
 
-Contributing is easy. Fork this repo, hack away, and submit your 
+Contributing is easy. Fork this repo, hack away, and submit your
 [pull request](https://help.github.com/articles/using-pull-requests).
-Make Me is currently maintained by [@skalnik](http://github.com/skalnik/) and 
+Make Me is currently maintained by [@skalnik](http://github.com/skalnik/) and
 [@sshirokov](http://github.com/sshirokov).
 
 Most importantly, go print things! We hope make-me can remove any
