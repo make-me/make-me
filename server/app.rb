@@ -98,7 +98,9 @@ module MakeMe
                       0.27
                     end
 
-      slicer_args[:lineHeight] = line_height
+      # Merge slicer_args into the quality array. Anything in slicer_args
+      # overwrites our notion of "quality"
+      slicer_args = {:lineHeight => quality}.merge(slicer_args)
 
       configurator = MakeMe::MiracleGrueConfigurator.new(slicer_args)
       configurator.save(GRUE_CONFIG)
