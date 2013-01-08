@@ -57,11 +57,20 @@ module MakeMe
 
     get '/photo' do
       imagesnap = File.join(File.dirname(__FILE__), '..', 'vendor', 'imagesnap', 'imagesnap')
-
       out_name = 'snap_' + Time.now.to_i.to_s + ".jpg"
       out_dir = File.join(File.dirname(__FILE__), "public")
 
-      Process.wait Process.spawn(imagesnap, File.join(out_dir, out_name))
+      # Ask for the all the cameras we have
+      # the first line is a header.
+      cameras = IO.popen([imagesnap, "-l"]) do |cameras|
+        cameras.readlines
+      end[1..-1]
+
+      # Pick one safely and use it
+      camera = cameras[params[:camera].to_i % cameras.length].strip
+      puts "Picked camera: [#{camera}]"
+
+      Process.wait Process.spawn(*[imagesnap, '-d', camera, File.join(out_dir, out_name)])
 
       redirect out_name
     end
