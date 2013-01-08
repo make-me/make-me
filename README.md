@@ -42,8 +42,8 @@ extension:
 
     $ make data/jaws
 
-This is enough to get most things printed without tweaking, but
-make-me can adjust print parameters for you:
+This is enough to get most things printed without tweaking, you can [tweak
+the configuration](#slicer-config) to your liking to get a more fine-tuned print.
 
 ### Normalization and packing
 
