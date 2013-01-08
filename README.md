@@ -42,8 +42,7 @@ extension:
 
     $ make data/jaws
 
-This is enough to get most things printed without tweaking, you can [tweak
-the configuration](#slicer-config) to your liking to get a more fine-tuned print.
+This is enough to get most things printed without further tweaking.
 
 ### Normalization and packing
 
@@ -64,7 +63,7 @@ single object into a single print:
     # [.. stltwalker output ..]
     $ make QUALITY=low data/out
 
-## Slicer config
+### Slicer config
 
     $ make GRUE_CONFIG=default path/to/model
 
@@ -79,26 +78,6 @@ supporting surface for the model to rest on.
 
 You can copy any of those configs and modify the settings within them to tune
 your command line prints.
-
-Some settings of interest are:
-
-### Print quality
-
-    "layerHeight": 0.27,
-
-`layerHeight` controls the quality of the print by altering the
-line height of object layers.
-
-* high   -- 0.1mm
-* medium -- 0.27mm
-* low    -- 0.34mm
-
-### Print density
-
-    "infillDensity" : 0.05,
-
-`infillDensity` controls the infill percentage of the print. The default
-setting is `0.05`
 
 ## HTTP API
 
