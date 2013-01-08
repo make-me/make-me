@@ -1,5 +1,5 @@
 # MakeMe [![Build Status](https://travis-ci.org/make-me/make-me.png)](https://travis-ci.org/make-me/make-me)
-A pipeline for taking your [MakerBot Replicator 2](https://store.makerbot.com/replicator2.html) 
+A pipeline for taking your [MakerBot Replicator 2](https://store.makerbot.com/replicator2.html)
 to the next level of awesome. Embrace the meatspace!
 
 ## Support
@@ -7,7 +7,7 @@ to the next level of awesome. Embrace the meatspace!
 At the moment, this only works on **OS X 10.8+** and ships with a binary
 compiled for this platform. However, the binary relates to make-me's
 photo function, so some customization should enable other systems.
- 
+
 [Homebrew](http://mxcl.github.com/homebrew/) is required for the
 bootstrap to run. If you don't have it, go get it. We'll still be here.
 
@@ -23,7 +23,7 @@ as...
 ## CLI Interface
 
 Your printer can now be operated using make-me's command line tools.
-Hooray! Make-me comes with some STL files so you can test the basic 
+Hooray! Make-me comes with some STL files so you can test the basic
 operations of the toolchain:
 
     $ ls ./data
@@ -42,43 +42,13 @@ extension:
 
     $ make data/jaws
 
-This is enough to get most things printed without tweaking, but
-make-me can adjust print parameters for you:
-
-### Slicer config
-
-    $ make GRUE_CONFIG=default path/to/model
-
-`GRUE_CONFIG=name` controls the slicer config to use. These are stored in
-`./config/` in the project root and two configs are included.
-
-* `default` - The default configuration, it's used if no config is specified.
-* `support` - A slicer configuration that generates support structures
-for the model. This is particularly awesome for abstract shapes.
-
-### Print quality
-
-    $ make QUALITY=low path/to/model
-
-`QUALITY=(low|medium|high)` controls the quality of the print by altering the
-line height of object layers.
-
-* high   -- 0.1mm
-* medium -- 0.27mm
-* low    -- 0.34mm
-
-### Print density
-
-    $ make DENSITY=0.1 path/to/model
-
-`DENSITY=<percentage>` controls the infill percentage of the print. The default
-setting is `0.05`
+This is enough to get most things printed without further tweaking.
 
 ### Normalization and packing
 
 Make-me ships with
 [stltwalker](https://github.com/sshirokov/stltwalker), which is used to normalize
-input models and offer advanced functionality. But, stltwalker can also be used 
+input models and offer advanced functionality. But, stltwalker can also be used
 standalone as part of a manual print.
 
 Help for the version of `stltwalker` bundled with make-me can be found
@@ -92,6 +62,22 @@ single object into a single print:
     $ vendor/stltwalker/stltwalker -p data/object_a.stl data/object_b.stl data/object_b.stl -o data/out.stl
     # [.. stltwalker output ..]
     $ make QUALITY=low data/out
+
+### Slicer config
+
+    $ make GRUE_CONFIG=default path/to/model
+
+`GRUE_CONFIG=name` controls the slicer config to use. These are stored in
+`./config/` in the project root and three configs are included.
+
+* `default` - The default configuration, it's used if no config is specified.
+* `support` - A slicer configuration that generates support structures
+for the model. This is particularly awesome for abstract shapes.
+* `raft`    - A configuration that prints the model on a "raft" or
+supporting surface for the model to rest on.
+
+You can copy any of those configs and modify the settings within them to tune
+your command line prints.
 
 ## HTTP API
 
@@ -186,17 +172,17 @@ Returns `HTTP 404 NOT FOUND` if the lock is free.
 
 [Hubot](http://hubot.github.com/) can now make things for you. If you
 include our
-[hubot-script](https://github.com/github/hubot-scripts/blob/master/src/scripts/make_me.coffee), 
-you'll be able to use your 3D printer through Campfire. Our script 
-comes preconfigured for localhost:9292, but this can be altered for your 
-own network preferences. This may seem like the origins of Skynet, but 
+[hubot-script](https://github.com/github/hubot-scripts/blob/master/src/scripts/make_me.coffee),
+you'll be able to use your 3D printer through Campfire. Our script
+comes preconfigured for localhost:9292, but this can be altered for your
+own network preferences. This may seem like the origins of Skynet, but
 we assure you that it's not.
 
 ## How can I contribute?
 
-Contributing is easy. Fork this repo, hack away, and submit your 
+Contributing is easy. Fork this repo, hack away, and submit your
 [pull request](https://help.github.com/articles/using-pull-requests).
-Make Me is currently maintained by [@skalnik](http://github.com/skalnik/) and 
+Make Me is currently maintained by [@skalnik](http://github.com/skalnik/) and
 [@sshirokov](http://github.com/sshirokov).
 
 Most importantly, go print things! We hope make-me can remove any
