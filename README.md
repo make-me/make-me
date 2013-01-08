@@ -45,6 +45,25 @@ extension:
 This is enough to get most things printed without tweaking, but
 make-me can adjust print parameters for you:
 
+### Normalization and packing
+
+Make-me ships with
+[stltwalker](https://github.com/sshirokov/stltwalker), which is used to normalize
+input models and offer advanced functionality. But, stltwalker can also be used
+standalone as part of a manual print.
+
+Help for the version of `stltwalker` bundled with make-me can be found
+at:
+
+    $ vendor/stltwalker/stltwalker -h
+
+Stltwalker can be used to composite multiple objects or multiple copies of a
+single object into a single print:
+
+    $ vendor/stltwalker/stltwalker -p data/object_a.stl data/object_b.stl data/object_b.stl -o data/out.stl
+    # [.. stltwalker output ..]
+    $ make QUALITY=low data/out
+
 ## Slicer config
 
     $ make GRUE_CONFIG=default path/to/model
@@ -80,25 +99,6 @@ line height of object layers.
 
 `infillDensity` controls the infill percentage of the print. The default
 setting is `0.05`
-
-### Normalization and packing
-
-Make-me ships with
-[stltwalker](https://github.com/sshirokov/stltwalker), which is used to normalize
-input models and offer advanced functionality. But, stltwalker can also be used
-standalone as part of a manual print.
-
-Help for the version of `stltwalker` bundled with make-me can be found
-at:
-
-    $ vendor/stltwalker/stltwalker -h
-
-Stltwalker can be used to composite multiple objects or multiple copies of a
-single object into a single print:
-
-    $ vendor/stltwalker/stltwalker -p data/object_a.stl data/object_b.stl data/object_b.stl -o data/out.stl
-    # [.. stltwalker output ..]
-    $ make QUALITY=low data/out
 
 ## HTTP API
 
