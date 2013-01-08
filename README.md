@@ -45,7 +45,7 @@ extension:
 This is enough to get most things printed without tweaking, but
 make-me can adjust print parameters for you:
 
-### Slicer config
+## Slicer config
 
     $ make GRUE_CONFIG=default path/to/model
 
