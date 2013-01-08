@@ -118,8 +118,11 @@ you might enjoy it.
                    "count": 1,                                            \
                    "scale": 1.0,                                          \
                    "quality": "low",                                      \
-                   "density": 0.05,                                       \
-                   "config": "default"}'                                  \
+				   "slicer_args": {                                       \
+                     "infillDensity": 0.20,                               \
+                     "numberOfShells": 5                                  \
+                   }                                                      \
+                  }'                                                      \
            http://hubot:isalive@localhost:9393/print
 
 The parameters in the JSON object are
@@ -128,8 +131,8 @@ The parameters in the JSON object are
 * `quality` - The quality of the print, defined by line height. Can be "high", "medium" or "low". Default: "medium", **Optional**
 * `count`   - The number of times to print all the given objects. Default: 1, **Optional**
 * `scale`   - The scaling factor of the print. Default 1.0, **Optional**
-* `density` - The infill density of the object. From 0.0 to 1.0. Default: 0.05, **Optional**
 * `config`  - The Miracle-Grue config to use during slicing Default: "default", **Optional**
+* `slicer_args` - JSON args to be merged into the slicer config. **Optional**
 
 Returns `HTTP 200 OK` when the print appears to have begun successfully.
 
