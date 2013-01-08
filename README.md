@@ -78,7 +78,7 @@ line height of object layers.
 
     "infillDensity" : 0.05,
 
-`DENSITY=<percentage>` controls the infill percentage of the print. The default
+`infillDensity` controls the infill percentage of the print. The default
 setting is `0.05`
 
 ### Normalization and packing
