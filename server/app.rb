@@ -79,19 +79,17 @@ module MakeMe
 
       args = Yajl::Parser.new(:symbolize_keys => true).parse(request.body.read) || {}
 
-      stl_urls      = [*args[:url]]
-      count         = args[:count]
-      scale         = args[:scale]
-      supports      = (args[:supports] || false)
-      raft          = (args[:raft]     || false)
-      slice_quality = (args[:quality]  || 'medium')
-      density       = (args[:density]  || 0.05).to_f
+      stl_urls    = [*args[:url]]
+      count       = args[:count]
+      scale       = args[:scale]
+      slicer_args = (args[:slicer_args] || {})
+      quality     = (args[:quality]  || 'medium')
 
       normalizer_args = {}
       normalizer_args[:count] = count if count
       normalizer_args[:scale] = scale if scale
 
-      lineHeight =  case slice_quality
+      line_height = case quality
                     when 'low'
                       0.34
                     when 'high'
@@ -100,14 +98,9 @@ module MakeMe
                       0.27
                     end
 
-      slicerArgs =  {
-                      :infillDensity => density,
-                      :lineHeight    => lineHeight,
-                      :doSupport     => supports,
-                      :doRaft        => raft
-                    }
+      slicer_args[:lineHeight] = line_height
 
-      configurator = MakeMe::MiracleGrueConfigurator.new(slicerArgs)
+      configurator = MakeMe::MiracleGrueConfigurator.new(slicer_args)
       configurator.save(GRUE_CONFIG)
 
       # Fetch all of the inputs to temp files
