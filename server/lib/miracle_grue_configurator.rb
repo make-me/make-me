@@ -2,7 +2,7 @@ module MakeMe
   class MiracleGrueConfigurator
     attr_reader :config
 
-    def initialize(config)
+    def initialize(config = {})
       @config = defaults.merge(config)
     end
 
