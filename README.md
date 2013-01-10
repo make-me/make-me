@@ -42,37 +42,7 @@ extension:
 
     $ make data/jaws
 
-This is enough to get most things printed without tweaking, but
-make-me can adjust print parameters for you:
-
-### Slicer config
-
-    $ make GRUE_CONFIG=default path/to/model
-
-`GRUE_CONFIG=name` controls the slicer config to use. These are stored in
-`./config/` in the project root and two configs are included.
-
-* `default` - The default configuration, it's used if no config is specified.
-* `support` - A slicer configuration that generates support structures
-for the model. This is particularly awesome for abstract shapes.
-
-### Print quality
-
-    $ make QUALITY=low path/to/model
-
-`QUALITY=(low|medium|high)` controls the quality of the print by altering the
-line height of object layers.
-
-* high   -- 0.1mm
-* medium -- 0.27mm
-* low    -- 0.34mm
-
-### Print density
-
-    $ make DENSITY=0.1 path/to/model
-
-`DENSITY=<percentage>` controls the infill percentage of the print. The default
-setting is `0.05`
+This is enough to get most things printed without further tweaking.
 
 ### Normalization and packing
 
@@ -92,6 +62,22 @@ single object into a single print:
     $ vendor/stltwalker/stltwalker -p data/object_a.stl data/object_b.stl data/object_b.stl -o data/out.stl
     # [.. stltwalker output ..]
     $ make QUALITY=low data/out
+
+### Slicer config
+
+    $ make GRUE_CONFIG=default path/to/model
+
+`GRUE_CONFIG=name` controls the slicer config to use. These are stored in
+`./config/` in the project root and three configs are included.
+
+* `default` - The default configuration, it's used if no config is specified.
+* `support` - A slicer configuration that generates support structures
+for the model. This is particularly awesome for abstract shapes.
+* `raft`    - A configuration that prints the model on a "raft" or
+supporting surface for the model to rest on.
+
+You can copy any of those configs and modify the settings within them to tune
+your command line prints.
 
 ## HTTP API
 
@@ -132,8 +118,11 @@ you might enjoy it.
                    "count": 1,                                            \
                    "scale": 1.0,                                          \
                    "quality": "low",                                      \
-                   "density": 0.05,                                       \
-                   "config": "default"}'                                  \
+				   "slicer_args": {                                       \
+                     "infillDensity": 0.20,                               \
+                     "numberOfShells": 5                                  \
+                   }                                                      \
+                  }'                                                      \
            http://hubot:isalive@localhost:9393/print
 
 The parameters in the JSON object are
@@ -142,8 +131,8 @@ The parameters in the JSON object are
 * `quality` - The quality of the print, defined by line height. Can be "high", "medium" or "low". Default: "medium", **Optional**
 * `count`   - The number of times to print all the given objects. Default: 1, **Optional**
 * `scale`   - The scaling factor of the print. Default 1.0, **Optional**
-* `density` - The infill density of the object. From 0.0 to 1.0. Default: 0.05, **Optional**
 * `config`  - The Miracle-Grue config to use during slicing Default: "default", **Optional**
+* `slicer_args` - JSON args to be merged into the slicer config. **Optional**
 
 Returns `HTTP 200 OK` when the print appears to have begun successfully.
 

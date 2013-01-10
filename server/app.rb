@@ -5,6 +5,7 @@ Bundler.require
 require 'timeout'
 require_relative 'lib/download'
 require_relative 'lib/normalizer'
+require_relative 'lib/miracle_grue_configurator'
 
 module MakeMe
   class App < Sinatra::Base
@@ -12,6 +13,7 @@ module MakeMe
     LOG_FILE  = File.join('tmp', 'make.log')
     FETCH_MODEL_FILE = File.join('data', 'fetch.stl')
     CURRENT_MODEL_FILE = File.join('data', 'print.stl')
+    GRUE_CONFIG = File.join('config', 'grue-make-me.config')
 
     ## Config
     set :static, true
@@ -86,16 +88,31 @@ module MakeMe
 
       args = Yajl::Parser.new(:symbolize_keys => true).parse(request.body.read) || {}
 
-      stl_urls      = [*args[:url]]
-      count         = args[:count]
-      scale         = args[:scale]
-      grue_conf     = (args[:config]  || 'default')
-      slice_quality = (args[:quality] || 'medium')
-      density       = (args[:density] || 0.05).to_f
+      stl_urls    = [*args[:url]]
+      count       = args[:count]
+      scale       = args[:scale]
+      slicer_args = (args[:slicer_args] || {})
+      quality     = (args[:quality]  || 'medium')
 
       normalizer_args = {}
       normalizer_args[:count] = count if count
       normalizer_args[:scale] = scale if scale
+
+      line_height = case quality
+                    when 'low'
+                      0.34
+                    when 'high'
+                      0.1
+                    else
+                      0.27
+                    end
+
+      # Merge slicer_args into the quality array. Anything in slicer_args
+      # overwrites our notion of "quality"
+      slicer_args = {:lineHeight => line_height}.merge(slicer_args)
+
+      configurator = MakeMe::MiracleGrueConfigurator.new(slicer_args)
+      configurator.save(GRUE_CONFIG)
 
       # Fetch all of the inputs to temp files
       inputs = MakeMe::Download.new(stl_urls, FETCH_MODEL_FILE).fetch
@@ -107,16 +124,12 @@ module MakeMe
       end
 
       # Print the normalized STL
-      make_params = [ "GRUE_CONFIG=#{grue_conf}",
-                      "QUALITY=#{slice_quality}",
-                      "DENSITY=#{density}"]
-
-      make_stl    = [ "make", *make_params,
+      make_stl    = [ "make", "GRUE_CONFIG=make-me",
                       "#{File.dirname(output)}/#{File.basename(output, '.stl')};",
                       "rm #{PID_FILE}"].join(" ")
 
-      # Kick off the print, if it runs for >5 seconds, it's unlikely it failed
-      # during slicing
+      # Slicing usually is usually under 5 seconds, so if the process runs
+      # longer, it's probably printing correctly
       begin
         pid = Process.spawn(make_stl, :err => :out, :out => [LOG_FILE, "a"])
         File.open(PID_FILE, 'w') { |f| f.write pid }
