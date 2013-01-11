@@ -1,6 +1,10 @@
 #!/bin/sh
 if [[ -z $RACK_ENV ]]; then
-  RACK_ENV="development"
+  export RACK_ENV="development"
+fi
+
+if [[ -z $RACK_ROOT ]]; then
+  export RACK_ROOT=`pwd`
 fi
 
 script/bootstrap

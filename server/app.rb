@@ -9,11 +9,13 @@ require_relative 'lib/miracle_grue_configurator'
 
 module MakeMe
   class App < Sinatra::Base
-    PID_FILE  = File.join('tmp', 'make.pid')
-    LOG_FILE  = File.join('tmp', 'make.log')
-    FETCH_MODEL_FILE = File.join('data', 'fetch.stl')
-    CURRENT_MODEL_FILE = File.join('data', 'print.stl')
-    GRUE_CONFIG = File.join('config', 'grue-make-me.config')
+    RACK_ROOT          = ENV['RACK_ROOT'] || File.expand_path(File.join(File.dirname(__FILE__), '..'))
+    APP_ROOT           = File.expand_path(RACK_ROOT, '..')
+    PID_FILE           = File.join(APP_ROOT, 'tmp', 'make.pid')
+    LOG_FILE           = File.join(APP_ROOT, 'tmp', 'make.log')
+    FETCH_MODEL_FILE   = File.join(APP_ROOT, 'data', 'fetch.stl')
+    CURRENT_MODEL_FILE = File.join(APP_ROOT, 'data', 'print.stl')
+    GRUE_CONFIG        = File.join(APP_ROOT, 'config', 'grue-make-me.config')
 
     ## Config
     set :static, true
@@ -58,9 +60,9 @@ module MakeMe
     end
 
     get '/photo' do
-      imagesnap = File.join(File.dirname(__FILE__), '..', 'vendor', 'imagesnap', 'imagesnap')
+      imagesnap = File.join(APP_ROOT, 'vendor', 'imagesnap', 'imagesnap')
       out_name = 'snap_' + Time.now.to_i.to_s + ".jpg"
-      out_dir = File.join(File.dirname(__FILE__), "public")
+      out_dir = settings.public_folder
 
       # Ask for the all the cameras we have
       # the first line is a header.
@@ -70,8 +72,6 @@ module MakeMe
 
       # Pick one safely and use it
       camera = cameras[params[:camera].to_i % cameras.length].strip
-      puts "Picked camera: [#{camera}]"
-
       Process.wait Process.spawn(*[imagesnap, '-d', camera, File.join(out_dir, out_name)])
 
       redirect out_name
