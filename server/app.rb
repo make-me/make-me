@@ -9,7 +9,7 @@ require_relative 'lib/miracle_grue_configurator'
 
 module MakeMe
   class App < Sinatra::Base
-    RACK_ROOT          = ENV['RACK_ROOT'] || File.expand_path(File.dirname(__FILE__), '..')
+    RACK_ROOT          = ENV['RACK_ROOT'] || File.expand_path(File.join(File.dirname(__FILE__), '..'))
     APP_ROOT           = File.expand_path(RACK_ROOT, '..')
     PID_FILE           = File.join(APP_ROOT, 'tmp', 'make.pid')
     LOG_FILE           = File.join(APP_ROOT, 'tmp', 'make.log')
