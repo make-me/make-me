@@ -9,11 +9,12 @@ require_relative 'lib/miracle_grue_configurator'
 
 module MakeMe
   class App < Sinatra::Base
-    PID_FILE  = File.join('tmp', 'make.pid')
-    LOG_FILE  = File.join('tmp', 'make.log')
-    FETCH_MODEL_FILE = File.join('data', 'fetch.stl')
-    CURRENT_MODEL_FILE = File.join('data', 'print.stl')
-    GRUE_CONFIG = File.join('config', 'grue-make-me.config')
+    RACK_ROOT          = ENV['RACK_ROOT']
+    PID_FILE           = File.join(RACK_ROOT, 'tmp', 'make.pid')
+    LOG_FILE           = File.join(RACK_ROOT, 'tmp', 'make.log')
+    FETCH_MODEL_FILE   = File.join(RACK_ROOT, 'data', 'fetch.stl')
+    CURRENT_MODEL_FILE = File.join(RACK_ROOT, 'data', 'print.stl')
+    GRUE_CONFIG        = File.join(RACK_ROOT, 'config', 'grue-make-me.config')
 
     ## Config
     set :static, true
@@ -58,7 +59,7 @@ module MakeMe
     end
 
     get '/photo' do
-      imagesnap = File.join(File.dirname(__FILE__), '..', 'vendor', 'imagesnap', 'imagesnap')
+      imagesnap = File.join(RACK_ROOT, 'vendor', 'imagesnap', 'imagesnap')
       out_name = 'snap_' + Time.now.to_i.to_s + ".jpg"
       out_dir = File.join(File.dirname(__FILE__), "public")
 
