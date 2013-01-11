@@ -10,11 +10,12 @@ require_relative 'lib/miracle_grue_configurator'
 module MakeMe
   class App < Sinatra::Base
     RACK_ROOT          = ENV['RACK_ROOT'] || File.expand_path(File.dirname(__FILE__), '..')
-    PID_FILE           = File.join(RACK_ROOT, 'tmp', 'make.pid')
-    LOG_FILE           = File.join(RACK_ROOT, 'tmp', 'make.log')
-    FETCH_MODEL_FILE   = File.join(RACK_ROOT, 'data', 'fetch.stl')
-    CURRENT_MODEL_FILE = File.join(RACK_ROOT, 'data', 'print.stl')
-    GRUE_CONFIG        = File.join(RACK_ROOT, 'config', 'grue-make-me.config')
+    APP_ROOT           = File.expand_path(RACK_ROOT, '..')
+    PID_FILE           = File.join(APP_ROOT, 'tmp', 'make.pid')
+    LOG_FILE           = File.join(APP_ROOT, 'tmp', 'make.log')
+    FETCH_MODEL_FILE   = File.join(APP_ROOT, 'data', 'fetch.stl')
+    CURRENT_MODEL_FILE = File.join(APP_ROOT, 'data', 'print.stl')
+    GRUE_CONFIG        = File.join(APP_ROOT, 'config', 'grue-make-me.config')
 
     ## Config
     set :static, true
@@ -59,7 +60,7 @@ module MakeMe
     end
 
     get '/photo' do
-      imagesnap = File.join(RACK_ROOT, 'vendor', 'imagesnap', 'imagesnap')
+      imagesnap = File.join(APP_ROOT, 'vendor', 'imagesnap', 'imagesnap')
       out_name = 'snap_' + Time.now.to_i.to_s + ".jpg"
       out_dir = settings.public_folder
 
