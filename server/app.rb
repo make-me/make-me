@@ -61,7 +61,7 @@ module MakeMe
     get '/photo' do
       imagesnap = File.join(RACK_ROOT, 'vendor', 'imagesnap', 'imagesnap')
       out_name = 'snap_' + Time.now.to_i.to_s + ".jpg"
-      out_dir = File.join(File.dirname(__FILE__), "public")
+      out_dir = settings.public_folder
 
       # Ask for the all the cameras we have
       # the first line is a header.
