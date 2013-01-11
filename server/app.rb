@@ -71,8 +71,6 @@ module MakeMe
 
       # Pick one safely and use it
       camera = cameras[params[:camera].to_i % cameras.length].strip
-      puts "Picked camera: [#{camera}]"
-
       Process.wait Process.spawn(*[imagesnap, '-d', camera, File.join(out_dir, out_name)])
 
       redirect out_name
