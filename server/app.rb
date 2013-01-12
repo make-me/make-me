@@ -28,16 +28,6 @@ module MakeMe
     end
 
     helpers do
-      def imagesnap
-        imagesnap = File.join(APP_ROOT, 'vendor', 'imagesnap', 'imagesnap')
-      end
-
-      def cameras
-        IO.popen([imagesnap, "-l"]) do |cameras|
-          cameras.readlines
-        end[1..-1]
-      end
-
       def progress
         progress = 0
         if File.exists?(LOG_FILE)
@@ -67,32 +57,6 @@ module MakeMe
         status 404
         "not found"
       end
-    end
-
-    get '/photo.json' do
-      out_dir = settings.public_folder
-      count = 0
-      images = cameras.map do |camera|
-        out_name = "snap_#{count += 1}_#{Time.now.to_i}.jpg"
-        Process.wait Process.spawn(*[imagesnap, '-d', camera.strip, File.join(out_dir, out_name)])
-        "http#{request.secure? ? 's' : ''}://#{request.host_with_port}/#{out_name}"
-      end
-
-      content_type :json
-      Yajl::Encoder.encode({:images => images})
-    end
-
-    get '/photo' do
-      out_name = 'snap_' + Time.now.to_i.to_s + ".jpg"
-      out_dir = settings.public_folder
-
-      # Pick one safely and use it
-      cams = cameras
-      camera = params[:camera] || Random.rand(cams.length)
-      camera = cams[camera % cams.length].strip
-      Process.wait Process.spawn(*[imagesnap, '-d', camera, File.join(out_dir, out_name)])
-
-      redirect out_name
     end
 
     ## Routes/Authed
@@ -170,3 +134,4 @@ module MakeMe
 end
 
 require_relative 'app/lock'
+require_relative 'app/photo'
