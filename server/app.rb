@@ -28,6 +28,16 @@ module MakeMe
     end
 
     helpers do
+      def imagesnap
+        imagesnap = File.join(APP_ROOT, 'vendor', 'imagesnap', 'imagesnap')
+      end
+
+      def cameras
+        IO.popen([imagesnap, "-l"]) do |cameras|
+          cameras.readlines
+        end[1..-1]
+      end
+
       def progress
         progress = 0
         if File.exists?(LOG_FILE)
@@ -59,19 +69,27 @@ module MakeMe
       end
     end
 
+    get '/photo.json' do
+      out_dir = settings.public_folder
+      count = 0
+      images = cameras.map do |camera|
+        out_name = "snap_#{count += 1}_#{Time.now.to_i}.jpg"
+        Process.wait Process.spawn(*[imagesnap, '-d', camera.strip, File.join(out_dir, out_name)])
+        "http#{request.secure? ? 's' : ''}://#{request.host_with_port}/#{out_name}"
+      end
+
+      content_type :json
+      Yajl::Encoder.encode({:images => images})
+    end
+
     get '/photo' do
-      imagesnap = File.join(APP_ROOT, 'vendor', 'imagesnap', 'imagesnap')
       out_name = 'snap_' + Time.now.to_i.to_s + ".jpg"
       out_dir = settings.public_folder
 
-      # Ask for the all the cameras we have
-      # the first line is a header.
-      cameras = IO.popen([imagesnap, "-l"]) do |cameras|
-        cameras.readlines
-      end[1..-1]
-
       # Pick one safely and use it
-      camera = cameras[params[:camera].to_i % cameras.length].strip
+      cams = cameras
+      camera = params[:camera] || Random.rand(cams.length)
+      camera = cams[camera % cams.length].strip
       Process.wait Process.spawn(*[imagesnap, '-d', camera, File.join(out_dir, out_name)])
 
       redirect out_name
