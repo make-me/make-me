@@ -28,8 +28,6 @@ module MakeMe
       redirect out_name
     end
 
-
-
     helpers do
       def cameras
         IO.popen([IMAGESNAP, "-l"]) do |cameras|
