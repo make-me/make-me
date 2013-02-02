@@ -106,10 +106,31 @@ module MakeMe
                     else
                       0.27
                     end
+      roofs = floors = case quality
+               when 'low'
+                 3
+               when 'high'
+                 7
+               else
+                 5
+               end
+      shells = case quality
+               when 'low'
+                 2
+               when 'high'
+                 4
+               else
+                 2
+               end
 
       # Merge slicer_args into the quality array. Anything in slicer_args
       # overwrites our notion of "quality"
-      slicer_args = {:lineHeight => line_height}.merge(slicer_args)
+      slicer_args = {
+        :lineHeight => line_height,
+        :roofLayerCount => roofs,
+        :floorLayerCount => floors,
+        :numberOfShells => shells,
+      }.merge(slicer_args)
 
       configurator = MakeMe::MiracleGrueConfigurator.new(slicer_args)
       configurator.save(GRUE_CONFIG)
