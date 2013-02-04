@@ -22,7 +22,7 @@ module MakeMe
       # Pick one safely and use it
       cams = cameras
       camera = params[:camera] || Random.rand(cams.length)
-      camera = cams[camera % cams.length].strip
+      camera = cams[camera.to_i % cams.length].strip
       Process.wait Process.spawn(*[IMAGESNAP, '-d', camera, File.join(out_dir, out_name)])
 
       redirect out_name
