@@ -59,24 +59,6 @@ module MakeMe
       end
     end
 
-    get '/photo' do
-      imagesnap = File.join(APP_ROOT, 'vendor', 'imagesnap', 'imagesnap')
-      out_name = 'snap_' + Time.now.to_i.to_s + ".jpg"
-      out_dir = settings.public_folder
-
-      # Ask for the all the cameras we have
-      # the first line is a header.
-      cameras = IO.popen([imagesnap, "-l"]) do |cameras|
-        cameras.readlines
-      end[1..-1]
-
-      # Pick one safely and use it
-      camera = cameras[params[:camera].to_i % cameras.length].strip
-      Process.wait Process.spawn(*[imagesnap, '-d', camera, File.join(out_dir, out_name)])
-
-      redirect out_name
-    end
-
     ## Routes/Authed
     post '/print' do
       require_basic_auth
@@ -173,3 +155,4 @@ module MakeMe
 end
 
 require_relative 'app/lock'
+require_relative 'app/photo'
