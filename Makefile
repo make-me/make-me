@@ -16,10 +16,6 @@ ifneq ($(words $(MAKECMDGOALS)), 1)
 	@echo "!!!> ERROR:Can only make one thing at a time" >&2
 	@exit 1
 endif
-ifeq ($(MAKECMDGOALS), "sandwich")
-	THING_DIR = ($ROOT)/data/
-	THING_NAME = "sandwich.stl"
-endif
 	@[[ -c /dev/$(USB) ]] || { echo "No USB device found"; exit 1; }
 	@echo "Printing"
 	(                                       \
@@ -50,7 +46,11 @@ init:
 
 ## Main
 .DEFAULT_GOAL = help
-.PHONY: help init
+.PHONY: help init sandwich
+
+# Easter egg
+sandwich:
+	$(MAKE) data/sandwich
 
 help:
 	@echo "Usage:               "
