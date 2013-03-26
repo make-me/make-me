@@ -3,7 +3,7 @@
 	url = https://github.com/skalnik/s3g.git
 [submodule "vendor/Miracle-Grue"]
 	path = vendor/Miracle-Grue
-	url = https://github.com/skalnik/Miracle-Grue.git
+	url = https://github.com/makerbot/Miracle-Grue.git
 [submodule "vendor/stltwalker"]
 	path = vendor/stltwalker
 	url = https://github.com/sshirokov/stltwalker.git
