@@ -34,7 +34,7 @@ else:
     port = options.port
 factory = makerbot_driver.MachineFactory()
 obj = factory.build_from_port(port)
-profile = getattr(obj, 'profile')
+profile = obj.profile()
 
 assembler = makerbot_driver.GcodeAssembler(profile)
 start, end, variables = assembler.assemble_recipe()
