@@ -39,6 +39,7 @@ endif
 ## Plumbing
 init:
 	@echo "=> Loading submodules"
+	git submodule sync
 	git submodule update --init --recursive
 	@echo "=> Building deps"
 	$(MAKE) -C vendor
