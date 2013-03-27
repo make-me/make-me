@@ -34,9 +34,14 @@ else:
     port = options.port
 factory = makerbot_driver.MachineFactory()
 obj = factory.build_from_port(port)
+profile = getattr(obj, 'profile')
 
-assembler = makerbot_driver.GcodeAssembler(getattr(obj, 'profile'))
+assembler = makerbot_driver.GcodeAssembler(profile)
 start, end, variables = assembler.assemble_recipe()
+start_position = profile.values['print_start_sequence']['start_position']
+variables['START_X'] = start_position['start_x']
+variables['START_Y'] = start_position['start_y']
+variables['START_Z'] = start_position['start_z']
 start_gcode = assembler.assemble_start_sequence(start)
 end_gcode = assembler.assemble_end_sequence(end)
 
