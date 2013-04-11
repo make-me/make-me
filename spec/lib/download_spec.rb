@@ -14,16 +14,5 @@ describe MakeMe::Download do
       end
       download.fetch
     end
-
-    it "can translate a tinkercad thing to a download" do
-      tinkercad_id = '99Ji3HC0Ukqq'
-      tinkercad_url = "https://tinkercad.com/things/#{tinkercad_id}-hot-dog"
-      tinkercad_download = "https://tinkercad.com/things/#{tinkercad_id}/polysoup.stl"
-      download_path = "#{path}.0"
-
-      download = described_class.new([tinkercad_url], path)
-      Curl::Easy.should_receive(:download).with(tinkercad_download, download_path)
-      download.fetch
-    end
   end
 end

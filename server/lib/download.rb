@@ -9,7 +9,6 @@ module MakeMe
     def fetch
       outputs = []
       @urls.each_with_index do |url, index|
-        url = extract_tinkercad_download(url)
         file_name = "#{@output}.#{index}"
         outputs << file_name
         Curl::Easy.download(url, file_name) do |c|
@@ -18,17 +17,6 @@ module MakeMe
         end
       end
       outputs
-    end
-
-    private
-
-    def extract_tinkercad_download(url)
-      if md = url.match(%r{tinkercad\.com/things/(\w+)-[^/]+/?$})
-        thing_id = md[1]
-        url = "https://tinkercad.com/things/#{thing_id}/polysoup.stl"
-      end
-
-      url
     end
   end
 end
