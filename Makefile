@@ -47,7 +47,11 @@ init:
 
 ## Main
 .DEFAULT_GOAL = help
-.PHONY: help init
+.PHONY: help init sandwich
+
+# Easter egg
+sandwich:
+	$(MAKE) data/sandwich
 
 help:
 	@echo "Usage:               "
