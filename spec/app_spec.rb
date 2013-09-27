@@ -45,6 +45,11 @@ describe MakeMe::App do
                            and_return(normalizer)
         post '/print', Yajl::Encoder.encode({:url => urls, :scale => scale, :count => count})
       end
+
+      it 'rejects local files' do
+        post '/print', Yajl::Encoder.encode({:url => ['file:///etc/passwd']})
+        expect(last_response.status).to eq(406)
+      end
     end
   end
 end

@@ -76,6 +76,12 @@ module MakeMe
       slicer_args = (args[:slicer_args] || {})
       quality     = (args[:quality]  || 'medium')
 
+      # ensure no URLs point ot the local file system
+      stl_urls.each do |url|
+        uri = URI.parse(url)
+        halt 406, "Need a remote file" if uri.scheme == 'file'
+      end
+
       normalizer_args = {}
       normalizer_args[:count] = count if count
       normalizer_args[:scale] = scale if scale
