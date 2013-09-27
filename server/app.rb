@@ -79,7 +79,7 @@ module MakeMe
       # ensure no URLs point ot the local file system
       stl_urls.each do |url|
         uri = URI.parse(url)
-        halt 406, "Need a remote file" if uri.scheme == 'file'
+        halt 406, "Need a remote file" if uri.scheme.downcase == 'file'
       end
 
       normalizer_args = {}
