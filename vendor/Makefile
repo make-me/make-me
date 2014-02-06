@@ -1,14 +1,14 @@
 #-*- mode:makefile-gmake; -*-
 
 all: | brews
-	$(MAKE) grue
+	$(MAKE) cura
 	$(MAKE) s3g
 	make -C stltwalker
 
-## Grue build
-grue: Miracle-Grue/bin/miracle_grue
-Miracle-Grue/bin/miracle_grue:
-	cd Miracle-Grue && scons
+## Cura build
+cura: cura/CuraEngine
+cura/CuraEngine:
+	cd cura && make
 
 s3g: s3g/virtualenv/bin/activate
 s3g/virtualenv/bin/activate:
