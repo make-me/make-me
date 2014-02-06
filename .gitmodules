@@ -4,3 +4,6 @@
 [submodule "vendor/stltwalker"]
 	path = vendor/stltwalker
 	url = https://github.com/sshirokov/stltwalker.git
+[submodule "vendor/cura"]
+	path = vendor/cura
+	url = https://github.com/Ultimaker/CuraEngine
