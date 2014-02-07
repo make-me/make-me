@@ -3,8 +3,7 @@ ROOT = $(shell pwd)
 USB ?= $(shell ls /dev/ | grep tty.usbmodem | head -1)
 
 ## Apps
-GRUE ?= $(ROOT)/vendor/Miracle-Grue/bin/miracle_grue
-GRUE_CONFIG ?= default
+CURA ?= $(ROOT)/vendor/cura/CuraEngine
 PRINT ?= $(ROOT)/bin/print_gcode -m "The Replicator 2" -p /dev/$(USB) -f
 
 ## What are we making?
@@ -28,9 +27,8 @@ endif
 
 %.gcode: %.stl
 	@echo "Building gcode: At[$@] In[$^]"
-	@(                                                                                               \
-		$(GRUE) -s /dev/null -e /dev/null -c $(ROOT)/config/grue-$(GRUE_CONFIG).config               \
-				-o "$(realpath $(dir $@))/$(notdir $@)" "$(realpath $^)" &                           \
+	@(                                                                                              \
+		$(CURA) "$(realpath $^)" > "$(realpath $@)" & \
 		echo $$! > $(ROOT)/tmp/slice.pid;                                                            \
 		wait `cat $(ROOT)/tmp/slice.pid` &&                                                          \
 		rm $(ROOT)/tmp/slice.pid;                                                                    \
