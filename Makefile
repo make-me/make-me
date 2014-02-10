@@ -4,6 +4,7 @@ USB ?= $(shell ls /dev/ | grep tty.usbmodem | head -1)
 
 ## Apps
 CURA ?= $(ROOT)/vendor/cura/CuraEngine
+CURA_CONFIG ?= default
 PRINT ?= $(ROOT)/bin/print_gcode -m "The Replicator 2" -p /dev/$(USB) -f
 
 ## What are we making?
@@ -27,8 +28,8 @@ endif
 
 %.gcode: %.stl
 	@echo "Building gcode: At[$@] In[$^]"
-	@(                                                                                              \
-		$(CURA) "$(realpath $^)" > "$(realpath $@)" & \
+	@(                                                                                             \
+		$(CURA) -o "$(realpath $@)" "$(realpath $^)" -c $(ROOT)/config/$(CURA_CONFIG).cfg &          \
 		echo $$! > $(ROOT)/tmp/slice.pid;                                                            \
 		wait `cat $(ROOT)/tmp/slice.pid` &&                                                          \
 		rm $(ROOT)/tmp/slice.pid;                                                                    \
