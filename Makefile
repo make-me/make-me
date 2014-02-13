@@ -29,7 +29,7 @@ endif
 %.gcode: %.stl
 	@echo "Building gcode: At[$@] In[$^]"
 	@(                                                                                             \
-		$(CURA) -o "$(realpath $@)" "$(realpath $^)" -c $(ROOT)/config/$(CURA_CONFIG).cfg &          \
+		$(CURA) -o "$(realpath $@)" "$(realpath $^)" -c $(ROOT)/config/rep2-$(CURA_CONFIG).cfg &     \
 		echo $$! > $(ROOT)/tmp/slice.pid;                                                            \
 		wait `cat $(ROOT)/tmp/slice.pid` &&                                                          \
 		rm $(ROOT)/tmp/slice.pid;                                                                    \
